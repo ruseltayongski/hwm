@@ -16,7 +16,7 @@ Axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
 // 添加请求拦截器
 Axios.interceptors.request.use((request: any) => {
 
-  request.headers["Authorization"] = request.headers["Authorization"] ? '' : S.getAuthToken();
+  request.headers["Authorization"] = request.headers["Authorization"] ? '' : 'Bearer '+S.getAuthToken();
 
   request.headers["content-type"] = "application/json;charset=UTF-8";
 
@@ -40,7 +40,7 @@ Axios.interceptors.response.use(
       if (response.data.code === undefined) {
         return response.data;
       } else if (response.data.code !== 0 && !response.data.data) {
-        ElMessage.error(response.data.message);
+        console.log(response.data.message);
       }
     }
 
@@ -62,9 +62,9 @@ Axios.interceptors.response.use(
 
     if (customCode) {
       if (customCode === 403) {
-        ElMessage.error(error.response.data.message);
+        console.log(error.response.data.message);
       } else if (customCode === 500) {
-        ElMessage.error(error.response.data.message);
+        console.log(error.response.data.message);
       }
     } else if (code) {
       if (code === 401) {
@@ -73,7 +73,7 @@ Axios.interceptors.response.use(
         });
       } else if (code === 403) {
       } else {
-        ElMessage.error(error.response.data.message);
+        console.log(error.response.data.message);
       }
     }
 
