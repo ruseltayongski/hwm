@@ -9,7 +9,7 @@
             </div>
         <!-- Menu Items -->
             <div class="hidden space-x-6 md:flex">
-                <router-link class="hover:text-darkGrayishBlue" to="/Home">Home</router-link>
+                <router-link class="hover:text-darkGrayishBlue" to="/">Home</router-link>
                 <router-link class="hover:text-darkGrayishBlue" to="/About">About</router-link>
                 <router-link class="hover:text-darkGrayishBlue" to="/Login">Login</router-link>
                 <a href="#" class="hover:text-darkGrayishBlue">Contact Us</a>
