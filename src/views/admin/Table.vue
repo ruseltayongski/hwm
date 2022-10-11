@@ -25,7 +25,7 @@
     import { useRoute, useRouter } from "vue-router"
     import { S } from "@/utils";
     import { useTokenStore } from "@/stores"
-    import { getUserProfile } from "@/api/auth"
+    import { getUserProfile, getAllActiveUser } from "@/api/auth"
 
     const router = useRouter();
     const tokenStore = useTokenStore();
@@ -40,16 +40,30 @@
     const logo_webdev = ref(LogoWebdev);
     const logo_xd = ref(LogoXd);
 
+    const get_all_active_user = ref([])
+
     onMounted(() => {
-        _getUserProfile()
+      _getUserProfile()
+      _getAllActiveUser()
     })
 
     const _getUserProfile = async () => {
         const response = await getUserProfile() 
-        console.log(response)
     }
 
-
+    const _getAllActiveUser = async () => {
+      const response = await getAllActiveUser()
+      get_all_active_user.value = response.map((item: any) => {
+        let pis_pic_path = 'http://49.157.74.3/pis/public'
+        let pis_pic_default = item.sex === 'Female' ? 'female1.png' : 'male1.png'
+        pis_pic_default = pis_pic_path + '/assets_ace/images/avatars/' + pis_pic_default
+        return {
+          ...item,
+          picture : item.picture ? pis_pic_path + '/upload_picture/picture/' + item.picture : pis_pic_default
+        }
+      })
+    }
+    
     const handleClickSignOut = () => {
         // S.delete('authToken')
         S.deleteAll(true);
@@ -213,41 +227,16 @@
                         <th class="px-6 py-3 font-semibold capitalize align-middle bg-transparent border-b border-gray-200 border-solid shadow-none tracking-none whitespace-nowrap text-slate-400 opacity-70"></th>
                       </tr>
                     </thead>
-                    <tbody>
+                    <tbody v-for="user in get_all_active_user" :key="user.id">
                       <tr>
                         <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
                           <div class="flex px-2 py-1">
                             <div>
-                              <img :src="team_2" class="inline-flex items-center justify-center mr-4 text-white transition-all duration-200 ease-soft-in-out text-sm h-9 w-9 rounded-xl" alt="user1" />
+                              <img :src="user.picture" class="inline-flex items-center justify-center mr-4 text-white transition-all duration-200 ease-soft-in-out text-sm h-9 w-9 rounded-xl" alt="user2" />
                             </div>
                             <div class="flex flex-col justify-center">
-                              <h6 class="mb-0 leading-normal text-sm">John Michael</h6>
-                              <p class="mb-0 leading-tight text-xs text-slate-400">john@creative-tim.com</p>
-                            </div>
-                          </div>
-                        </td>
-                        <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                          <p class="mb-0 font-semibold leading-tight text-xs">Manager</p>
-                          <p class="mb-0 leading-tight text-xs text-slate-400">Organization</p>
-                        </td>
-                        <td class="p-2 leading-normal text-center align-middle bg-transparent border-b text-sm whitespace-nowrap shadow-transparent">
-                          <span class="bg-gradient-to-tl from-green-600 to-lime-400 px-3.6 text-xs rounded-1.8 py-2.2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">Online</span>
-                        </td>
-                        <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                          <span class="font-semibold leading-tight text-xs text-slate-400">23/04/18</span>
-                        </td>
-                        <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                          <a href="javascript:;" class="font-semibold leading-tight text-xs text-slate-400"> Edit </a>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                          <div class="flex px-2 py-1">
-                            <div>
-                              <img :src="team_3" class="inline-flex items-center justify-center mr-4 text-white transition-all duration-200 ease-soft-in-out text-sm h-9 w-9 rounded-xl" alt="user2" />
-                            </div>
-                            <div class="flex flex-col justify-center">
-                              <h6 class="mb-0 leading-normal text-sm">Alexa Liras</h6>
+                            <!--   <h6 class="mb-0 leading-normal text-sm">Alexa Liras</h6> -->
+                              <h6 class="mb-0 leading-normal text-sm">{{ user.fname + " " + user.mname + " " + user.lname }}</h6>
                               <p class="mb-0 leading-tight text-xs text-slate-400">alexa@creative-tim.com</p>
                             </div>
                           </div>
@@ -266,110 +255,10 @@
                           <a href="javascript:;" class="font-semibold leading-tight text-xs text-slate-400"> Edit </a>
                         </td>
                       </tr>
-                      <tr>
-                        <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                          <div class="flex px-2 py-1">
-                            <div>
-                              <img :src="team_4" class="inline-flex items-center justify-center mr-4 text-white transition-all duration-200 ease-soft-in-out text-sm h-9 w-9 rounded-xl" alt="user3" />
-                            </div>
-                            <div class="flex flex-col justify-center">
-                              <h6 class="mb-0 leading-normal text-sm">Laurent Perrier</h6>
-                              <p class="mb-0 leading-tight text-xs text-slate-400">laurent@creative-tim.com</p>
-                            </div>
-                          </div>
-                        </td>
-                        <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                          <p class="mb-0 font-semibold leading-tight text-xs">Executive</p>
-                          <p class="mb-0 leading-tight text-xs text-slate-400">Projects</p>
-                        </td>
-                        <td class="p-2 leading-normal text-center align-middle bg-transparent border-b text-sm whitespace-nowrap shadow-transparent">
-                          <span class="bg-gradient-to-tl from-green-600 to-lime-400 px-3.6 text-xs rounded-1.8 py-2.2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">Online</span>
-                        </td>
-                        <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                          <span class="font-semibold leading-tight text-xs text-slate-400">19/09/17</span>
-                        </td>
-                        <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                          <a href="javascript:;" class="font-semibold leading-tight text-xs text-slate-400"> Edit </a>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                          <div class="flex px-2 py-1">
-                            <div>
-                              <img :src="team_3" class="inline-flex items-center justify-center mr-4 text-white transition-all duration-200 ease-soft-in-out text-sm h-9 w-9 rounded-xl" alt="user4" />
-                            </div>
-                            <div class="flex flex-col justify-center">
-                              <h6 class="mb-0 leading-normal text-sm">Michael Levi</h6>
-                              <p class="mb-0 leading-tight text-xs text-slate-400">michael@creative-tim.com</p>
-                            </div>
-                          </div>
-                        </td>
-                        <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                          <p class="mb-0 font-semibold leading-tight text-xs">Programator</p>
-                          <p class="mb-0 leading-tight text-xs text-slate-400">Developer</p>
-                        </td>
-                        <td class="p-2 leading-normal text-center align-middle bg-transparent border-b text-sm whitespace-nowrap shadow-transparent">
-                          <span class="bg-gradient-to-tl from-green-600 to-lime-400 px-3.6 text-xs rounded-1.8 py-2.2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">Online</span>
-                        </td>
-                        <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                          <span class="font-semibold leading-tight text-xs text-slate-400">24/12/08</span>
-                        </td>
-                        <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                          <a href="javascript:;" class="font-semibold leading-tight text-xs text-slate-400"> Edit </a>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                          <div class="flex px-2 py-1">
-                            <div>
-                              <img :src="team_2" class="inline-flex items-center justify-center mr-4 text-white transition-all duration-200 ease-soft-in-out text-sm h-9 w-9 rounded-xl" alt="user5" />
-                            </div>
-                            <div class="flex flex-col justify-center">
-                              <h6 class="mb-0 leading-normal text-sm">Richard Gran</h6>
-                              <p class="mb-0 leading-tight text-xs text-slate-400">richard@creative-tim.com</p>
-                            </div>
-                          </div>
-                        </td>
-                        <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                          <p class="mb-0 font-semibold leading-tight text-xs">Manager</p>
-                          <p class="mb-0 leading-tight text-xs text-slate-400">Executive</p>
-                        </td>
-                        <td class="p-2 leading-normal text-center align-middle bg-transparent border-b text-sm whitespace-nowrap shadow-transparent">
-                          <span class="bg-gradient-to-tl from-slate-600 to-slate-300 px-3.6 text-xs rounded-1.8 py-2.2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">Offline</span>
-                        </td>
-                        <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                          <span class="font-semibold leading-tight text-xs text-slate-400">04/10/21</span>
-                        </td>
-                        <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                          <a href="javascript:;" class="font-semibold leading-tight text-xs text-slate-400"> Edit </a>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="p-2 align-middle bg-transparent border-b-0 whitespace-nowrap shadow-transparent">
-                          <div class="flex px-2 py-1">
-                            <div>
-                              <img :src="team_4" class="inline-flex items-center justify-center mr-4 text-white transition-all duration-200 ease-soft-in-out text-sm h-9 w-9 rounded-xl" alt="user6" />
-                            </div>
-                            <div class="flex flex-col justify-center">
-                              <h6 class="mb-0 leading-normal text-sm">Miriam Eric</h6>
-                              <p class="mb-0 leading-tight text-xs text-slate-400">miriam@creative-tim.com</p>
-                            </div>
-                          </div>
-                        </td>
-                        <td class="p-2 align-middle bg-transparent border-b-0 whitespace-nowrap shadow-transparent">
-                          <p class="mb-0 font-semibold leading-tight text-xs">Programtor</p>
-                          <p class="mb-0 leading-tight text-xs text-slate-400">Developer</p>
-                        </td>
-                        <td class="p-2 leading-normal text-center align-middle bg-transparent border-b-0 text-sm whitespace-nowrap shadow-transparent">
-                          <span class="bg-gradient-to-tl from-slate-600 to-slate-300 px-3.6 text-xs rounded-1.8 py-2.2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">Offline</span>
-                        </td>
-                        <td class="p-2 text-center align-middle bg-transparent border-b-0 whitespace-nowrap shadow-transparent">
-                          <span class="font-semibold leading-tight text-xs text-slate-400">14/09/20</span>
-                        </td>
-                        <td class="p-2 align-middle bg-transparent border-b-0 whitespace-nowrap shadow-transparent">
-                          <a href="javascript:;" class="font-semibold leading-tight text-xs text-slate-400"> Edit </a>
-                        </td>
-                      </tr>
+
+  
+
+                     
                     </tbody>
                   </table>
                 </div>
