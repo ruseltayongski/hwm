@@ -13,4 +13,8 @@ export function getUserProfile(params: {} = {}) {
   return req.get("/user/profile", params);
 }
 
+export function getAllActiveUser(params: {} = {}) {
+  return req.get("/user/profile", params);
+}
+
 

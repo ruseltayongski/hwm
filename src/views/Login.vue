@@ -5,6 +5,7 @@
   import { useRouter } from "vue-router"
 
   const tokenStore = useTokenStore()
+  const router = useRouter();
 
   const ruleForm = reactive({
     username : "",
@@ -41,6 +42,10 @@
       console.log(token)
       tokenStore.dispatch(token)
 
+      router.push({
+        path: "/admin",
+      });
+      
     } catch (err) {
       console.log(err)
     }

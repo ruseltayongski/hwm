@@ -1,4 +1,5 @@
 <script setup lang="ts">
+    import '@/style/index.css'
     import Nav from '../layout/Nav.vue'
     import { ref, onMounted } from "vue"
     import { useRoute, useRouter } from "vue-router";
