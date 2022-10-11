@@ -54,7 +54,7 @@
 
     const _getUserProfile = async () => {
         const response = await getUserProfile() 
-        console.log(response)
+        //console.log(response)
     }
 
 

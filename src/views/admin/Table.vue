@@ -22,14 +22,9 @@
     
     import SideBar from '@/layout/admin/SideBar.vue'
     import { ref, onMounted } from "vue"
-    import { useRoute, useRouter } from "vue-router"
-    import { S } from "@/utils";
-    import { useTokenStore } from "@/stores"
     import { getUserProfile } from "@/api/auth"
 
-    const router = useRouter();
-    const tokenStore = useTokenStore();
-
+    
     const team_2 = ref(Team2);
     const team_3 = ref(Team3);
     const team_4 = ref(Team4);
@@ -40,25 +35,16 @@
     const logo_webdev = ref(LogoWebdev);
     const logo_xd = ref(LogoXd);
 
+    const rusel = ref('');
+
     onMounted(() => {
         _getUserProfile()
     })
 
     const _getUserProfile = async () => {
         const response = await getUserProfile() 
-        console.log(response)
+        //console.log(response)
     }
-
-
-    const handleClickSignOut = () => {
-        // S.delete('authToken')
-        S.deleteAll(true);
-        tokenStore.dispatch("");
-
-        router.push({
-            path: "/login",
-        });
-    };
 </script>
 <template>
     <SideBar></SideBar>
@@ -74,7 +60,7 @@
               </li>
               <li class="text-sm pl-2 capitalize leading-normal text-slate-700 before:float-left before:pr-2 before:text-gray-600 before:content-['/']" aria-current="page">Tables</li>
             </ol>
-            <h6 class="mb-0 font-bold capitalize">Tables</h6>
+            <h6 class="mb-0 font-bold capitalize">Tables {{ rusel }}</h6>
           </nav>
 
           <div class="flex items-center mt-2 grow sm:mt-0 sm:mr-6 md:mr-0 lg:flex lg:basis-auto">
@@ -83,7 +69,7 @@
                 <span class="text-sm ease-soft leading-5.6 absolute z-50 -ml-px flex h-full items-center whitespace-nowrap rounded-lg rounded-tr-none rounded-br-none border border-r-0 border-transparent bg-transparent py-2 px-2.5 text-center font-normal text-slate-500 transition-all">
                   <i class="fas fa-search" aria-hidden="true"></i>
                 </span>
-                <input type="text" class="pl-8.75 text-sm focus:shadow-soft-primary-outline ease-soft w-1/100 leading-5.6 relative -ml-px block min-w-0 flex-auto rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding py-2 pr-3 text-gray-700 transition-all placeholder:text-gray-500 focus:border-fuchsia-300 focus:outline-none focus:transition-shadow" placeholder="Type here..." />
+                <input type="text" v-model="rusel" class="pl-8.75 text-sm focus:shadow-soft-primary-outline ease-soft w-1/100 leading-5.6 relative -ml-px block min-w-0 flex-auto rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding py-2 pr-3 text-gray-700 transition-all placeholder:text-gray-500 focus:border-fuchsia-300 focus:outline-none focus:transition-shadow" placeholder="Type hereasdasd..." />
               </div>
             </div>
             <ul class="flex flex-row justify-end pl-0 mb-0 list-none md-max:w-full">
