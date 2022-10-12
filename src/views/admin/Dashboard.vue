@@ -54,9 +54,8 @@
 
     const _getUserProfile = async () => {
         const response = await getUserProfile() 
-        //console.log(response)
+        console.log(response)
     }
-
 
     const handleClickSignOut = () => {
         // S.delete('authToken')
@@ -67,7 +66,6 @@
             path: "/login",
         });
     };
-
 </script>
 <template>
     <SideBar></SideBar>
@@ -911,7 +909,7 @@
             </div>
           </div>
         </div>
-
+        
         <footer class="pt-4">
           <div class="w-full px-6 mx-auto">
             <div class="flex flex-wrap items-center -mx-3 lg:justify-between">
@@ -945,6 +943,7 @@
         </footer>
       </div>
       <!-- end cards -->
+
     </main>
 
     <div fixed-plugin>
@@ -1010,6 +1009,7 @@
         </div>
       </div>
     </div>
+
 </template>
 
 <style scoped>

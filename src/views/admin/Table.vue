@@ -26,7 +26,7 @@
     import { S } from "@/utils";
     import { useTokenStore } from "@/stores"
     import { getUserProfile, getAllActiveUser } from "@/api/auth"
-    // import { retrieveAllLabResults } from "@/api/laboratory"
+    import { retrieveAllLabResults } from "@/api/laboratory"
   
     const team_2 = ref(Team2);
     const team_3 = ref(Team3);
@@ -39,24 +39,27 @@
     const logo_xd = ref(LogoXd);
 
     const get_all_active_user = ref([])
+    const active_total_page = ref(0)
 
     onMounted(() => {
       _getUserProfile()
       _getAllActiveUser()
-      // _getAllLabResult()
+      _getAllLabResult()
     })
 
-    // const _getAllLabResult = async () => {
-    //     const response = await retrieveAllLabResults() 
-    // }
+    const _getAllLabResult = async () => {
+        const response = await retrieveAllLabResults() 
+        console.log(response)
+    }
 
     const _getUserProfile = async () => {
         const response = await getUserProfile() 
     }
 
-    const _getAllActiveUser = async () => {
-      const response = await getAllActiveUser()
-      get_all_active_user.value = response.map((item: any) => {
+    const _getAllActiveUser = async (params: {}) => {
+      const response = await getAllActiveUser(params)
+      active_total_page.value = response.total
+      get_all_active_user.value = response.data.map((item: any) => {
         let pis_pic_path = 'http://49.157.74.3/pis/public'
         let pis_pic_default = item.sex === 'Female' ? 'female1.png' : 'male1.png'
         pis_pic_default = pis_pic_path + '/assets_ace/images/avatars/' + pis_pic_default
@@ -66,6 +69,14 @@
         }
       })
     }
+
+    const onClickHandler = (page: number) => {
+      const params = {
+        page : page
+      }
+      _getAllActiveUser(params)
+    };
+
     
     const handleClickSignOut = () => {
         // S.delete('authToken')
@@ -75,9 +86,7 @@
         router.push({
             path: "/login",
         });
-};
-
-    
+    };
 </script>
 <template>
 
@@ -262,12 +271,21 @@
                           <a href="javascript:;" class="font-semibold leading-tight text-xs text-slate-400"> Edit </a>
                         </td>
                       </tr>
-
-  
-
-                     
                     </tbody>
                   </table>
+
+                  <div class="pagination-padding">
+                    <vue-awesome-paginate
+                      :total-items="active_total_page"
+                      :current-page="1"
+                      :items-per-page="15"
+                      :max-pages-shown="10"
+                      :on-click="onClickHandler"
+                      prev-button-content="<<<"
+                      next-button-content=">>>"
+                    />
+                  </div>
+
                 </div>
               </div>
             </div>
@@ -275,7 +293,6 @@
         </div>
 
         <!-- card 2 -->
-
         <div class="flex flex-wrap -mx-3">
           <div class="flex-none w-full max-w-full px-3">
             <div class="relative flex flex-col min-w-0 mb-6 break-words bg-white border-0 border-transparent border-solid shadow-soft-xl rounded-2xl bg-clip-border">
@@ -546,4 +563,34 @@
     @import '@/style/assets/css/nucleo-svg.css';
     /* Main Styling */
     @import '@/style/assets/css/soft-ui-dashboard-tailwind.css';
+</style>
+
+<style lang="scss">
+  .pagination-container {
+    display: flex;
+    column-gap: 10px;
+  }
+  .paginate-buttons {
+    height: 40px;
+    width: 40px;
+    border-radius: 20px;
+    cursor: pointer;
+    background-color: rgb(242, 242, 242);
+    border: 1px solid rgb(217, 217, 217);
+    color: black;
+  }
+  .paginate-buttons:hover {
+    background-color: #d8d8d8;
+  }
+  .active-page {
+    background-color: #3498db;
+    border: 1px solid #3498db;
+    color: white;
+  }
+  .active-page:hover {
+    background-color: #2988c8;
+  }
+  .pagination-padding {
+    padding: 20px;
+  }
 </style>

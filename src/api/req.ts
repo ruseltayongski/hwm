@@ -10,8 +10,10 @@ declare module "axios" {
 }
 
 Axios.defaults.timeout = 120000;
+
 //设置请求基地址
-Axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
+//Axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
+const laravelAxios = import.meta.env.VITE_API_BASE_URL
 
 // 添加请求拦截器
 Axios.interceptors.request.use((request: any) => {
@@ -85,14 +87,14 @@ Axios.interceptors.response.use(
  * get方法封装
  */
 function get(url: string, params: any, headers: {} = {}) {
-  return Axios.get(url, { params, headers });
+  return Axios.get(laravelAxios + url, { params, headers });
 }
 
 /**
  * delect方法封装
  */
 function deletes(url: string, params: any, headers: {} = {}) {
-  return Axios.delete(url, {
+  return Axios.delete(laravelAxios + url, {
     params,
     headers,
   });
@@ -102,14 +104,14 @@ function deletes(url: string, params: any, headers: {} = {}) {
  * post方法封装
  */
 function post(url: string, params: any, headers: {} = {}) {
-  return Axios.post(url, params, headers);
+  return Axios.post(laravelAxios + url, params, headers);
 }
 
 /**
  * put方法封装
  */
 function put(url: string, params: any, headers: {} = {}) {
-  return Axios.put(url, params, headers);
+  return Axios.put(laravelAxios + url, params, headers);
 }
 
 export default {

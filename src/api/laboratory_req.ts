@@ -11,13 +11,13 @@ declare module "axios" {
 
 Axios.defaults.timeout = 120000;
 //设置请求基地址
-Axios.defaults.baseURL = import.meta.env.LABRESULT_API_URL;
+//Axios.defaults.baseURL = import.meta.env.LABRESULT_API_URL;
+const SpringBootAxios = import.meta.env.VITE_API_BASE_URL_SPRING;
 
 // 添加请求拦截器
 Axios.interceptors.request.use((request: any) => {
 
   //request.headers["Authorization"] = request.headers["Authorization"] ? '' : 'Bearer '+S.getAuthToken();
-
   request.headers["content-type"] = "application/json;charset=UTF-8";
 
   return request;
@@ -26,32 +26,12 @@ Axios.interceptors.request.use((request: any) => {
 // 添加响应拦截器
 Axios.interceptors.response.use(
   (response) => {
-    const code = response.status;
-
-    if (code == undefined) {
-      let error = {
-        message: "网络异常",
-      };
-      return Promise.reject(error);
-    } else if (code < 200 || code > 300) {
-      return Promise.reject("error");
-    } else {
-      // 如果为undefined 说明为下载接口，无code
-      if (response.data.code === undefined) {
-        return response.data;
-      } else if (response.data.code !== 0 && !response.data.data) {
-        console.log(response.data.message);
-      }
-    }
-
-    return response.data.data;
+    return response;
   },
   (error) => {
     let code = 0;
     let customCode = 0;
     try {
-      // code = error.response.data.status;
-      // customCode = error.response.data.code;
       code = error.response.status;
       customCode = error.response.code;
     } catch (e) {
@@ -85,14 +65,14 @@ Axios.interceptors.response.use(
  * get方法封装
  */
 function get(url: string, params: any, headers: {} = {}) {
-  return Axios.get(url, { params, headers });
+  return Axios.get(SpringBootAxios + url, { params, headers });
 }
 
 /**
  * delect方法封装
  */
 function deletes(url: string, params: any, headers: {} = {}) {
-  return Axios.delete(url, {
+  return Axios.delete(SpringBootAxios + url, {
     params,
     headers,
   });
@@ -102,14 +82,14 @@ function deletes(url: string, params: any, headers: {} = {}) {
  * post方法封装
  */
 function post(url: string, params: any, headers: {} = {}) {
-  return Axios.post(url, params, headers);
+  return Axios.post(SpringBootAxios + url, params, headers);
 }
 
 /**
  * put方法封装
  */
 function put(url: string, params: any, headers: {} = {}) {
-  return Axios.put(url, params, headers);
+  return Axios.put(SpringBootAxios + url, params, headers);
 }
 
 export default {
