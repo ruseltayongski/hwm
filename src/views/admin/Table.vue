@@ -26,8 +26,8 @@
     import { S } from "@/utils";
     import { useTokenStore } from "@/stores"
     import { getUserProfile, getAllActiveUser } from "@/api/auth"
-
-    
+    import { retrieveAllLabResults } from "@/api/laboratory"
+  
     const team_2 = ref(Team2);
     const team_3 = ref(Team3);
     const team_4 = ref(Team4);
@@ -44,7 +44,13 @@
     onMounted(() => {
       _getUserProfile()
       _getAllActiveUser()
+      _getAllLabResult()
     })
+
+    const _getAllLabResult = async () => {
+        const response = await retrieveAllLabResults() 
+        console.log(response)
+    }
 
     const _getUserProfile = async () => {
         const response = await getUserProfile() 
@@ -81,9 +87,10 @@
             path: "/login",
         });
     };
-    
 </script>
 <template>
+
+    
     <SideBar></SideBar>
     <main class="ease-soft-in-out xl:ml-68.5 relative h-full max-h-screen rounded-xl transition-all duration-200">
       <!-- Navbar -->
