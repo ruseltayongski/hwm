@@ -11,12 +11,12 @@ declare module "axios" {
 
 Axios.defaults.timeout = 120000;
 //设置请求基地址
-Axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
+Axios.defaults.baseURL = import.meta.env.LABRESULT_API_URL;
 
 // 添加请求拦截器
 Axios.interceptors.request.use((request: any) => {
 
-  request.headers["Authorization"] = request.headers["Authorization"] ? '' : 'Bearer '+S.getAuthToken();
+  //request.headers["Authorization"] = request.headers["Authorization"] ? '' : 'Bearer '+S.getAuthToken();
 
   request.headers["content-type"] = "application/json;charset=UTF-8";
 
@@ -68,9 +68,9 @@ Axios.interceptors.response.use(
       }
     } else if (code) {
       if (code === 401) {
-        // router.push({
-        //   path: "/login",
-        // });
+        router.push({
+          path: "/login",
+        });
       } else if (code === 403) {
       } else {
         console.log(error.response.data.message);
