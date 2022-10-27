@@ -74,7 +74,7 @@
               <a href="#" class="hover:text-gray-400 lg:p-4 py-2 text-gray-500">Departments</a>
               <a href="#" class="hover:text-gray-400 lg:p-4 py-2 text-gray-500">Services</a>
               <a href="#" class="hover:text-gray-400 lg:p-4 py-2 text-gray-500">Blog</a>
-              <a href="#" class="hover:text-gray-400 lg:p-4 py-2 text-gray-500">Contact</a> 
+              <router-link to="/Login" href="#" class="hover:text-gray-400 lg:p-4 py-2 text-gray-500">Login</router-link> 
             </div>
             <div class="flex-wrap gap-2 inline-flex items-center py-1"> 
               <a href="#" class="bg-primary-500 hover:bg-primary-600 inline-block px-6 py-2 rounded text-white">Book Appointment</a> 

@@ -15,25 +15,28 @@
   /**
   * 登录
   * */ 
-  const handleClickLogin = async () => {
+  const handleClickLogin = async (e) => {
+    e.preventDefault();
     if (!ruleForm.username && !ruleForm.password) {
-      console.log("Please enter your username and password!")
+      alert("Please enter your username and password!")
+      return;
     } else if(!ruleForm.username) {
-      console.log("Please enter your username")
+      alert("Please enter your username")
+      return;
     } else if(!ruleForm.password) {
-      console.log("Please enter your password")
+      alert("Please enter your password")
+      return;
     }
     try {
       const response = await userLogin({
           username: ruleForm.username,
           password: ruleForm.password
       })
-
       /**
       * invalid credential
       * */
       if(response.message) {
-          console.log(response.message)
+          alert(response.message)
           return;
       }
 
@@ -45,7 +48,6 @@
       router.push({
         path: "/admin",
       });
-      
     } catch (err) {
       console.log(err)
     }
@@ -66,7 +68,7 @@
                   />
                   <h4 class="text-xl font-semibold mt-1 mb-12 pb-1 ">DOH HWM</h4>
                 </div>
-                <form>
+                <form v-on:submit="handleClickLogin">
                   <div class="mb-4">
                     <input
                       type="text"
@@ -89,10 +91,9 @@
                     <button
                       class="inline-block px-6 py-2.5 border-2 border-green-600 text-green-600 font-medium text-sm
                         leading-tight uppercase rounded shadow-md hover:bg-green-100 hover:shadow-lg  focus:outline-none focus:ring-0  transition duration-150 ease-in-out w-full mb-3"
-                      type="button"
+                      type="submit"
                       data-mdb-ripple="true"
                       data-mdb-ripple-color="light"
-                      @click="handleClickLogin"
                     >
                       SIGN IN
                     </button>
