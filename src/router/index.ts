@@ -3,7 +3,7 @@ import Home from '@/views/Home.vue'
 import About from '@/views/About.vue'
 import Login from '@/views/Login.vue'
 import AdminDashboard from '@/views/admin/Dashboard.vue'
-import AdminTable from '@/views/admin/Table.vue'
+import Laboratory from '@/views/admin/Laboratory.vue'
 //import LabResults from '@/views/admin/LabResults.vue'
 
 const router = createRouter({
@@ -13,7 +13,7 @@ const router = createRouter({
         { path: '/about', name: 'About', component : About },
         { path: '/login', name: 'Login', component: Login },
         { path: '/admin', name: 'Admin', component : AdminDashboard },
-        { path: '/table', name: 'Table', component: AdminTable },
+        { path: '/laboratory', name: 'Laboratory', component: Laboratory },
         //{ path: '/labresults', name: 'LabResults', component : LabResults },
     ]
 })
