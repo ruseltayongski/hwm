@@ -4,7 +4,6 @@ import About from '@/views/About.vue'
 import Login from '@/views/Login.vue'
 import AdminDashboard from '@/views/admin/Dashboard.vue'
 import Laboratory from '@/views/admin/Laboratory.vue'
-//import LabResults from '@/views/admin/LabResults.vue'
 
 const router = createRouter({
     history: createWebHistory(),
@@ -14,7 +13,6 @@ const router = createRouter({
         { path: '/login', name: 'Login', component: Login },
         { path: '/admin', name: 'Admin', component : AdminDashboard },
         { path: '/laboratory', name: 'Laboratory', component: Laboratory },
-        //{ path: '/labresults', name: 'LabResults', component : LabResults },
     ]
 })
 

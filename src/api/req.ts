@@ -20,7 +20,8 @@ Axios.interceptors.request.use((request: any) => {
 
   request.headers["Authorization"] = request.headers["Authorization"] ? '' : 'Bearer '+S.getAuthToken();
 
-  request.headers["content-type"] = "application/json;charset=UTF-8";
+  request.headers["Accept"] = "application/json";
+  request.headers["Content-Type"] = "application/json;charset=UTF-8";
 
   return request;
 });
