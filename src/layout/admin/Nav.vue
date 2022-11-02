@@ -40,7 +40,7 @@
 
         <div class="flex items-center mt-2 grow sm:mt-0 sm:mr-6 md:mr-0 lg:flex lg:basis-auto">
             <div class="flex items-center md:ml-auto md:pr-4">
-            <div class="relative flex flex-wrap items-stretch w-full transition-all rounded-lg ease-soft">
+            <div class="relative flex flex-wrap items-stretch w-full transition-all rounded-lg ease-soft" v-if="router_path === '/laboratory'">
                 <span class="text-sm ease-soft leading-5.6 absolute z-50 -ml-px flex h-full items-center whitespace-nowrap rounded-lg rounded-tr-none rounded-br-none border border-r-0 border-transparent bg-transparent py-2 px-2.5 text-center font-normal text-slate-500 transition-all">
                     <i class="fas fa-search" aria-hidden="true"></i>
                 </span>
@@ -153,8 +153,6 @@
 <style scoped>
     /* Fonts and icons */
     @import 'https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700';
-    /* Font Awesome Icons */
-    @import 'https://kit.fontawesome.com/42d5adcbca.js';
     /* Nucleo Icons */
     @import '@/style/assets/css/nucleo-icons.css';
     @import '@/style/assets/css/nucleo-svg.css';

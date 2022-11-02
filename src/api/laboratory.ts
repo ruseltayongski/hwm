@@ -9,9 +9,5 @@ export function employeeLaborartoryResult(params: {} = {}) {
 }
 
 export function createLaboratoryResult(params: {} = {}) {
-  return req.post(`/labresults`,params);
+  return req.post("/labresults",params);
 }
-
-
-
-

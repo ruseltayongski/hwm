@@ -1,10 +1,5 @@
 import Axios from "axios";
 
-import router from "@/router";
-
-// const { t } = useI18n();
-import { S } from "@/utils";
-
 declare module "axios" {
   export interface AxiosResponse<T = any> extends Promise<T> {}
 }
@@ -18,7 +13,8 @@ const SpringBootAxios = import.meta.env.VITE_API_BASE_URL_SPRING;
 Axios.interceptors.request.use((request: any) => {
 
   //request.headers["Authorization"] = request.headers["Authorization"] ? '' : 'Bearer '+S.getAuthToken();
-  request.headers["content-type"] = "application/json;charset=UTF-8";
+  request.headers["Accept"] = "application/json";
+  request.headers["Content-Type"] = "application/json;charset=UTF-8";
 
   return request;
 });
@@ -81,8 +77,8 @@ function deletes(url: string, params: any, headers: {} = {}) {
 /**
  * post方法封装
  */
-function post(url: string, params: any, headers: {} = {}) {
-  return Axios.post(SpringBootAxios + url, params, headers);
+function post(url: string, params: any) {
+  return Axios.post(SpringBootAxios + url, params);
 }
 
 /**
@@ -96,5 +92,5 @@ export default {
   get,
   deletes,
   post,
-  put,
-};
+  put
+}

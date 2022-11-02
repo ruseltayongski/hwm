@@ -35,8 +35,6 @@
 <style scoped>
     /* Fonts and icons */
     @import 'https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700';
-    /* Font Awesome Icons */
-    @import 'https://kit.fontawesome.com/42d5adcbca.js';
     /* Nucleo Icons */
     @import '@/style/assets/css/nucleo-icons.css';
     @import '@/style/assets/css/nucleo-svg.css';
