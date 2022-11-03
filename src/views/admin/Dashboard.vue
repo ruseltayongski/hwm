@@ -66,7 +66,7 @@
                 <div class="flex flex-row -mx-3">
                   <div class="flex-none w-2/3 max-w-full px-3">
                     <div>
-                      <p class="mb-0 font-sans font-semibold leading-normal text-sm">Number of Employee Avail</p>
+                      <p class="mb-0 font-sans font-semibold leading-normal text-sm">Number of Employees Screened</p>
                       <h5 class="mb-0 font-bold">
                         53,000
                         <span class="leading-normal text-sm font-weight-bolder text-lime-500">+55%</span>
@@ -90,7 +90,7 @@
                 <div class="flex flex-row -mx-3">
                   <div class="flex-none w-2/3 max-w-full px-3">
                     <div>
-                      <p class="mb-0 font-sans font-semibold leading-normal text-sm">Number of Employee Unavail</p>
+                      <p class="mb-0 font-sans font-semibold leading-normal text-sm">High Risk</p>
                       <h5 class="mb-0 font-bold">
                         3,462
                         <span class="leading-normal text-red-600 text-sm font-weight-bolder">2%</span>
@@ -114,7 +114,7 @@
                 <div class="flex flex-row -mx-3">
                   <div class="flex-none w-2/3 max-w-full px-3">
                     <div>
-                      <p class="mb-0 font-sans font-semibold leading-normal text-sm">Normal</p>
+                      <p class="mb-0 font-sans font-semibold leading-normal text-sm">Low Risk</p>
                       <h5 class="mb-0 font-bold">
                         103,430
                         <span class="leading-normal text-sm font-weight-bolder text-lime-500">+55%</span>
@@ -130,58 +130,6 @@
               </div>
             </div>
           </div>
-        </div>
-        <div class="mt-4"></div>
-        <!-- row 1 -->
-        <div class="flex flex-wrap -mx-3">
-          <!-- card2 -->
-          <div class="w-full max-w-full px-3 mb-6 sm:w-1/2 sm:flex-none xl:mb-0 xl:w-1/4">
-            <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border">
-              <div class="flex-auto p-4">
-                <div class="flex flex-row -mx-3">
-                  <div class="flex-none w-2/3 max-w-full px-3">
-                    <div>
-                      <p class="mb-0 font-sans font-semibold leading-normal text-sm">Low Risk</p>
-                      <h5 class="mb-0 font-bold">
-                        2,300
-                        <span class="leading-normal text-sm font-weight-bolder text-lime-500">+55%</span>
-                      </h5>
-                    </div>
-                  </div>
-                  <div class="px-3 text-right basis-1/3">
-                    <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-purple-700 to-pink-500">
-                      <i class="ni leading-none ni-world text-lg relative top-3.5 text-white"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- card1 -->
-          <div class="w-full max-w-full px-3 mb-6 sm:w-1/2 sm:flex-none xl:mb-0 xl:w-1/4">
-            <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border">
-              <div class="flex-auto p-4">
-                <div class="flex flex-row -mx-3">
-                  <div class="flex-none w-2/3 max-w-full px-3">
-                    <div>
-                      <p class="mb-0 font-sans font-semibold leading-normal text-sm">High Risk</p>
-                      <h5 class="mb-0 font-bold">
-                        53,000
-                        <span class="leading-normal text-red-600 text-sm font-weight-bolder">2%</span>
-                      </h5>
-                    </div>
-                  </div>
-                  <div class="px-3 text-right basis-1/3">
-                    <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-purple-700 to-pink-500">
-                      <i class="ni leading-none ni-badge text-lg relative top-3.5 text-white"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
         </div>
 
         <!-- cards row 2 -->
@@ -244,7 +192,7 @@
                 <p class="ml-2 leading-normal text-sm">(<span class="font-bold">+23%</span>) than last week</p>
                 <div class="w-full px-6 mx-auto max-w-screen-2xl rounded-xl">
                   <div class="flex flex-wrap mt-0 -mx-3">
-                    <div class="flex-none w-1/3 max-w-full py-4 pl-0 pr-3 mt-0">
+                    <div class="flex-none w-1/2 max-w-full py-4 pl-0 pr-3 mt-0">
                       <div class="flex mb-2">
                         <div class="flex items-center justify-center w-5 h-5 mr-2 text-center bg-center rounded fill-current shadow-soft-2xl bg-gradient-to-tl from-purple-700 to-pink-500 text-neutral-900">
                           <svg width="10px" height="10px" viewBox="0 0 40 44" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -263,12 +211,12 @@
                         </div>
                         <p class="mt-1 mb-0 font-semibold leading-tight text-xs">Total Employees</p>
                       </div>
-                      <h4 class="font-bold mt-6">36K</h4>
+                      <h4 class="font-bold">36K</h4>
                       <div class="text-xs h-0.75 flex w-3/4 overflow-visible rounded-lg bg-gray-200">
                         <div class="duration-600 ease-soft -mt-0.38 -ml-px flex h-1.5 w-3/5 flex-col justify-center overflow-hidden whitespace-nowrap rounded-lg bg-slate-700 text-center text-white transition-all" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
                       </div>
                     </div>
-                    <div class="flex-none w-1/3 max-w-full py-4 pl-0 pr-3 mt-0">
+                    <div class="flex-none w-1/2 max-w-full py-4 pl-0 pr-3 mt-0">
                       <div class="flex mb-2">
                         <div class="flex items-center justify-center w-5 h-5 mr-2 text-center bg-center rounded fill-current shadow-soft-2xl bg-gradient-to-tl from-blue-600 to-cyan-400 text-neutral-900">
                           <svg width="10px" height="10px" viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -290,14 +238,14 @@
                             </g>
                           </svg>
                         </div>
-                        <p class="mt-1 mb-0 font-semibold leading-tight text-xs">Number of Employees Availed</p>
+                        <p class="mt-1 mb-0 font-semibold leading-tight text-xs">Number of Employees Screened</p>
                       </div>
                       <h4 class="font-bold">2m</h4>
                       <div class="text-xs h-0.75 flex w-3/4 overflow-visible rounded-lg bg-gray-200">
                         <div class="duration-600 ease-soft -mt-0.38 w-9/10 -ml-px flex h-1.5 flex-col justify-center overflow-hidden whitespace-nowrap rounded-lg bg-slate-700 text-center text-white transition-all" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
                       </div>
                     </div>
-                    <div class="flex-none w-1/3 max-w-full py-4 pl-0 pr-3 mt-0">
+                    <!-- <div class="flex-none w-1/3 max-w-full py-4 pl-0 pr-3 mt-0">
                       <div class="flex mb-2">
                         <div class="flex items-center justify-center w-5 h-5 mr-2 text-center bg-center rounded fill-current shadow-soft-2xl bg-gradient-to-tl from-red-500 to-yellow-400 text-neutral-900">
                           <svg width="10px" height="10px" viewBox="0 0 43 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -320,7 +268,7 @@
                       <div class="text-xs h-0.75 flex w-3/4 overflow-visible rounded-lg bg-gray-200">
                         <div class="duration-600 ease-soft -mt-0.38 w-3/10 -ml-px flex h-1.5 flex-col justify-center overflow-hidden whitespace-nowrap rounded-lg bg-slate-700 text-center text-white transition-all" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
                       </div>
-                    </div>
+                    </div> -->
                   </div>
                 </div>
               </div>
