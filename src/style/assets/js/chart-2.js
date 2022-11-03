@@ -20,7 +20,7 @@ new Chart(ctx2, {
     labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
     datasets: [
       {
-        label: "Mobile apps",
+        label: "High Risk",
         tension: 0.4,
         borderWidth: 0,
         pointRadius: 0,
@@ -32,7 +32,7 @@ new Chart(ctx2, {
         maxBarThickness: 6,
       },
       {
-        label: "Websites",
+        label: "Low Risk",
         tension: 0.4,
         borderWidth: 0,
         pointRadius: 0,

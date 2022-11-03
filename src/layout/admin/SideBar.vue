@@ -20,8 +20,6 @@
     const _getUserProfile = async () => {
         user_profile.value = await getUserProfile()
     }
-
-    console.log(user_profile.value)
     
     const handleClickSignOut = () => {
         // S.delete('authToken')

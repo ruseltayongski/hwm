@@ -1,14 +1,9 @@
 <script setup lang="ts">
-    /* Popper */
-    import 'https://unpkg.com/@popperjs/core@2';
-    // plugin for charts
-    import '@/style/assets/js/plugins/chartjs.min.js'
-    // plugin for scrollbar
     import '@/style/assets/js/plugins/perfect-scrollbar.min.js'
     // github button
     import 'https://buttons.github.io/buttons.js'
     // main script file
-    import '@/style/assets/js/soft-ui-dashboard-tailwind.js'
+    import { softUiDashBoardTaildwind } from "@/style/assets/js/soft_ui_dashboard"
     
     //component
     import SideBar from '@/layout/admin/SideBar.vue'
@@ -18,7 +13,7 @@
     import { ref, onMounted } from "vue"
     import { useTokenStore } from "@/stores"
     import { getAllActiveUser } from "@/api/auth"
-    import { retrieveAllLabResults,createLaboratoryResult } from "@/api/laboratory"
+    import { retrieveAllLabResults,createLaboratoryResult,employeeLaborartoryResult } from "@/api/laboratory"
     
     import { notify } from "notiwind"
     
@@ -27,7 +22,7 @@
     import html2pdf from "html2pdf.js";
 
     const tokenStore = useTokenStore();
-    console.log(tokenStore.value)
+    //console.log(tokenStore.value)
 
     const get_all_active_user = ref([])
     const active_total_page = ref(0)
@@ -49,24 +44,30 @@
     onMounted(() => {
       _getAllActiveUser({})
       _getAllLabResult()
+      softUiDashBoardTaildwind()
     })
 
     const _getAllLabResult = async () => {
         await retrieveAllLabResults() 
     }
 
+    const _employeeLaborartoryResult = async (params: {}) => {
+        await employeeLaborartoryResult(params)
+    }
+
     const _getAllActiveUser = async (params: {}) => {
       const response = await getAllActiveUser(params)
       active_total_page.value = response.total
-      get_all_active_user.value = response.data.map((item: any) => {
+      get_all_active_user.value = await Promise.all(response.data.map(async (item: any) => {
         let pis_pic_path = import.meta.env.VITE_API_BASE_URL_PIS_PIC
         let pis_pic_default = item.sex === 'Female' ? 'female1.png' : 'male1.png'
         pis_pic_default = pis_pic_path + '/assets_ace/images/avatars/' + pis_pic_default
         return {
           ...item,
-          picture : item.picture ? pis_pic_path + '/upload_picture/picture/' + item.picture : pis_pic_default
+          picture : item.picture ? pis_pic_path + '/upload_picture/picture/' + item.picture : pis_pic_default,
+          lab_result : await employeeLaborartoryResult({ userid: item.userid })
         }
-      })
+      }))
     }
 
     const onClickHandler = (page: number) => {
@@ -116,8 +117,6 @@
   			filename: "laboratory-result.pdf",
 			});
     }
-
-    const rusel = ref("wew")
 </script>
 <template>
     <SideBar></SideBar>
@@ -144,7 +143,7 @@
                         <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Status</th>
                         <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Last Laboratory</th>
                         <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Option</th>
-                        <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Result</th>
+                        <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Laboratory Result</th>
                       </tr>
                     </thead>
                     <tbody v-for="user in get_all_active_user" :key="user.id">
@@ -155,7 +154,6 @@
                               <img :src="user.picture" class="inline-flex items-center justify-center mr-4 text-white transition-all duration-200 ease-soft-in-out text-sm h-9 w-9 rounded-xl" alt="user2" />
                             </div>
                             <div class="flex flex-col justify-center">
-                            <!--   <h6 class="mb-0 leading-normal text-sm">Alexa Liras</h6> -->
                               <h6 class="mb-0 leading-normal text-sm">{{ user.fname + " " + user.mname + " " + user.lname }}</h6>
                               <p class="mb-0 leading-tight text-xs text-slate-400">{{ user.designation }}</p>
                             </div>
@@ -175,67 +173,65 @@
                           <button class="inline-block px-8 py-2 mb-0 font-bold text-center uppercase align-middle transition-all bg-transparent border border-solid rounded-lg shadow-none cursor-pointer leading-pro ease-soft-in text-xs bg-150 active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 border-fuchsia-500 text-fuchsia-500 hover:opacity-75" @click="handleAddLaboratory(user.userid)">Add Laboratory</button>
                         </td>
                         <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                          <!-- <button @click="exportToPDF" class="inline-block px-0 py-3 mb-0 ml-6 font-bold leading-normal text-center uppercase align-middle transition-all bg-transparent border-0 rounded-lg shadow-none cursor-pointer ease-soft-in bg-150 text-sm active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 text-slate-700"><i class="mr-1 fas fa-file-pdf text-lg" aria-hidden="true"></i> PDF</button>
-                          <button @click="exportToPDF" class="inline-block px-0 py-3 mb-0 ml-6 font-bold leading-normal text-center uppercase align-middle transition-all bg-transparent border-0 rounded-lg shadow-none cursor-pointer ease-soft-in bg-150 text-sm active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 text-slate-700"><i class="mr-1 fas fa-file-pdf text-lg" aria-hidden="true"></i> PDF</button>
-                          <button @click="exportToPDF" class="inline-block px-0 py-3 mb-0 ml-6 font-bold leading-normal text-center uppercase align-middle transition-all bg-transparent border-0 rounded-lg shadow-none cursor-pointer ease-soft-in bg-150 text-sm active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 text-slate-700"><i class="mr-1 fas fa-file-pdf text-lg" aria-hidden="true"></i> PDF</button> -->
-                          <div class="flex-auto p-4">
-                <div class="before:border-r-solid relative before:absolute before:top-0 before:left-4 before:h-full before:border-r-2 before:border-r-slate-100 before:content-[''] before:lg:-ml-px">
-                  <div class="relative mb-4 mt-0 after:clear-both after:table after:content-[''] cursor-pointer" @click="exportToPDF">
-                    <span class="w-6.5 h-6.5 text-base absolute left-4 z-10 inline-flex -translate-x-1/2 items-center justify-center rounded-full bg-white text-center font-semibold">
-                      <i class="relative z-10 text-transparent ni leading-none ni-bell-55 leading-pro bg-gradient-to-tl from-green-600 to-lime-400 bg-clip-text fill-transparent"></i>
-                    </span>
-                    <div class="ml-11.252 pt-1.4 lg:max-w-120 relative -top-1.5 w-auto">
-                      <h6 class="mb-0 font-semibold leading-normal text-sm text-slate-700">$2400, Design changes</h6>
-                      <p class="mt-1 mb-0 font-semibold leading-tight text-xs text-slate-400">22 DEC 7:20 PM</p>
-                    </div>
-                  </div>
-                  <div class="relative mb-4 after:clear-both after:table after:content-['']">
-                    <span class="w-6.5 h-6.5 text-base absolute left-4 z-10 inline-flex -translate-x-1/2 items-center justify-center rounded-full bg-white text-center font-semibold">
-                      <i class="relative z-10 text-transparent ni leading-none ni-html5 leading-pro bg-gradient-to-tl from-red-600 to-rose-400 bg-clip-text fill-transparent"></i>
-                    </span>
-                    <div class="ml-11.252 pt-1.4 lg:max-w-120 relative -top-1.5 w-auto">
-                      <h6 class="mb-0 font-semibold leading-normal text-sm text-slate-700">New order #1832412</h6>
-                      <p class="mt-1 mb-0 font-semibold leading-tight text-xs text-slate-400">21 DEC 11 PM</p>
-                    </div>
-                  </div>
-                  <div class="relative mb-4 after:clear-both after:table after:content-['']">
-                    <span class="w-6.5 h-6.5 text-base absolute left-4 z-10 inline-flex -translate-x-1/2 items-center justify-center rounded-full bg-white text-center font-semibold">
-                      <i class="relative z-10 text-transparent ni leading-none ni-cart leading-pro bg-gradient-to-tl from-blue-600 to-cyan-400 bg-clip-text fill-transparent"></i>
-                    </span>
-                    <div class="ml-11.252 pt-1.4 lg:max-w-120 relative -top-1.5 w-auto">
-                      <h6 class="mb-0 font-semibold leading-normal text-sm text-slate-700">Server payments for April</h6>
-                      <p class="mt-1 mb-0 font-semibold leading-tight text-xs text-slate-400">21 DEC 9:34 PM</p>
-                    </div>
-                  </div>
-                  <div class="relative mb-4 after:clear-both after:table after:content-['']">
-                    <span class="w-6.5 h-6.5 text-base absolute left-4 z-10 inline-flex -translate-x-1/2 items-center justify-center rounded-full bg-white text-center font-semibold">
-                      <i class="relative z-10 text-transparent ni leading-none ni-credit-card leading-pro bg-gradient-to-tl from-red-500 to-yellow-400 bg-clip-text fill-transparent"></i>
-                    </span>
-                    <div class="ml-11.252 pt-1.4 lg:max-w-120 relative -top-1.5 w-auto">
-                      <h6 class="mb-0 font-semibold leading-normal text-sm text-slate-700">New card added for order #4395133</h6>
-                      <p class="mt-1 mb-0 font-semibold leading-tight text-xs text-slate-400">20 DEC 2:20 AM</p>
-                    </div>
-                  </div>
-                  <div class="relative mb-4 after:clear-both after:table after:content-['']">
-                    <span class="w-6.5 h-6.5 text-base absolute left-4 z-10 inline-flex -translate-x-1/2 items-center justify-center rounded-full bg-white text-center font-semibold">
-                      <i class="relative z-10 text-transparent ni leading-none ni-key-25 leading-pro bg-gradient-to-tl from-purple-700 to-pink-500 bg-clip-text fill-transparent"></i>
-                    </span>
-                    <div class="ml-11.252 pt-1.4 lg:max-w-120 relative -top-1.5 w-auto">
-                      <h6 class="mb-0 font-semibold leading-normal text-sm text-slate-700">Unlock packages for development</h6>
-                      <p class="mt-1 mb-0 font-semibold leading-tight text-xs text-slate-400">18 DEC 4:54 AM</p>
-                    </div>
-                  </div>
-                  <div class="relative mb-0 after:clear-both after:table after:content-['']">
-                    <span class="w-6.5 h-6.5 text-base absolute left-4 z-10 inline-flex -translate-x-1/2 items-center justify-center rounded-full bg-white text-center font-semibold">
-                      <i class="relative z-10 text-transparent ni leading-none ni-money-coins leading-pro bg-gradient-to-tl from-gray-900 to-slate-800 bg-clip-text fill-transparent"></i>
-                    </span>
-                    <div class="ml-11.252 pt-1.4 lg:max-w-120 relative -top-1.5 w-auto">
-                      <h6 class="mb-0 font-semibold leading-normal text-sm text-slate-700">New order #9583120</h6>
-                      <p class="mt-1 mb-0 font-semibold leading-tight text-xs text-slate-400">17 DEC</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+                          <button v-for="lab in user.lab_result" :key="lab.id" @click="exportToPDF" class="inline-block px-0 py-3 mb-0 ml-6 font-bold leading-normal text-center uppercase align-middle transition-all bg-transparent border-0 rounded-lg shadow-none cursor-pointer ease-soft-in bg-150 text-sm active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 text-slate-700"><i class="mr-1 fas fa-file-pdf text-lg" aria-hidden="true"></i> PDF</button>
+                          <!-- <div class="flex-auto p-4">
+                            <div class="before:border-r-solid relative before:absolute before:top-0 before:left-4 before:h-full before:border-r-2 before:border-r-slate-100 before:content-[''] before:lg:-ml-px">
+                              <div class="relative mb-4 mt-0 after:clear-both after:table after:content-[''] cursor-pointer" @click="exportToPDF">
+                                <span class="w-6.5 h-6.5 text-base absolute left-4 z-10 inline-flex -translate-x-1/2 items-center justify-center rounded-full bg-white text-center font-semibold">
+                                  <i class="relative z-10 text-transparent ni leading-none ni-bell-55 leading-pro bg-gradient-to-tl from-green-600 to-lime-400 bg-clip-text fill-transparent"></i>
+                                </span>
+                                <div class="ml-11.252 pt-1.4 lg:max-w-120 relative -top-1.5 w-auto">
+                                  <h6 class="mb-0 font-semibold leading-normal text-sm text-slate-700">$2400, Design changes</h6>
+                                  <p class="mt-1 mb-0 font-semibold leading-tight text-xs text-slate-400">22 DEC 7:20 PM</p>
+                                </div>
+                              </div>
+                              <div class="relative mb-4 after:clear-both after:table after:content-['']">
+                                <span class="w-6.5 h-6.5 text-base absolute left-4 z-10 inline-flex -translate-x-1/2 items-center justify-center rounded-full bg-white text-center font-semibold">
+                                  <i class="relative z-10 text-transparent ni leading-none ni-html5 leading-pro bg-gradient-to-tl from-red-600 to-rose-400 bg-clip-text fill-transparent"></i>
+                                </span>
+                                <div class="ml-11.252 pt-1.4 lg:max-w-120 relative -top-1.5 w-auto">
+                                  <h6 class="mb-0 font-semibold leading-normal text-sm text-slate-700">New order #1832412</h6>
+                                  <p class="mt-1 mb-0 font-semibold leading-tight text-xs text-slate-400">21 DEC 11 PM</p>
+                                </div>
+                              </div>
+                              <div class="relative mb-4 after:clear-both after:table after:content-['']">
+                                <span class="w-6.5 h-6.5 text-base absolute left-4 z-10 inline-flex -translate-x-1/2 items-center justify-center rounded-full bg-white text-center font-semibold">
+                                  <i class="relative z-10 text-transparent ni leading-none ni-cart leading-pro bg-gradient-to-tl from-blue-600 to-cyan-400 bg-clip-text fill-transparent"></i>
+                                </span>
+                                <div class="ml-11.252 pt-1.4 lg:max-w-120 relative -top-1.5 w-auto">
+                                  <h6 class="mb-0 font-semibold leading-normal text-sm text-slate-700">Server payments for April</h6>
+                                  <p class="mt-1 mb-0 font-semibold leading-tight text-xs text-slate-400">21 DEC 9:34 PM</p>
+                                </div>
+                              </div>
+                              <div class="relative mb-4 after:clear-both after:table after:content-['']">
+                                <span class="w-6.5 h-6.5 text-base absolute left-4 z-10 inline-flex -translate-x-1/2 items-center justify-center rounded-full bg-white text-center font-semibold">
+                                  <i class="relative z-10 text-transparent ni leading-none ni-credit-card leading-pro bg-gradient-to-tl from-red-500 to-yellow-400 bg-clip-text fill-transparent"></i>
+                                </span>
+                                <div class="ml-11.252 pt-1.4 lg:max-w-120 relative -top-1.5 w-auto">
+                                  <h6 class="mb-0 font-semibold leading-normal text-sm text-slate-700">New card added for order #4395133</h6>
+                                  <p class="mt-1 mb-0 font-semibold leading-tight text-xs text-slate-400">20 DEC 2:20 AM</p>
+                                </div>
+                              </div>
+                              <div class="relative mb-4 after:clear-both after:table after:content-['']">
+                                <span class="w-6.5 h-6.5 text-base absolute left-4 z-10 inline-flex -translate-x-1/2 items-center justify-center rounded-full bg-white text-center font-semibold">
+                                  <i class="relative z-10 text-transparent ni leading-none ni-key-25 leading-pro bg-gradient-to-tl from-purple-700 to-pink-500 bg-clip-text fill-transparent"></i>
+                                </span>
+                                <div class="ml-11.252 pt-1.4 lg:max-w-120 relative -top-1.5 w-auto">
+                                  <h6 class="mb-0 font-semibold leading-normal text-sm text-slate-700">Unlock packages for development</h6>
+                                  <p class="mt-1 mb-0 font-semibold leading-tight text-xs text-slate-400">18 DEC 4:54 AM</p>
+                                </div>
+                              </div>
+                              <div class="relative mb-0 after:clear-both after:table after:content-['']">
+                                <span class="w-6.5 h-6.5 text-base absolute left-4 z-10 inline-flex -translate-x-1/2 items-center justify-center rounded-full bg-white text-center font-semibold">
+                                  <i class="relative z-10 text-transparent ni leading-none ni-money-coins leading-pro bg-gradient-to-tl from-gray-900 to-slate-800 bg-clip-text fill-transparent"></i>
+                                </span>
+                                <div class="ml-11.252 pt-1.4 lg:max-w-120 relative -top-1.5 w-auto">
+                                  <h6 class="mb-0 font-semibold leading-normal text-sm text-slate-700">New order #9583120</h6>
+                                  <p class="mt-1 mb-0 font-semibold leading-tight text-xs text-slate-400">17 DEC</p>
+                                </div>
+                              </div>
+                            </div>
+                          </div> -->
                         </td>
                       </tr>
                     </tbody>
@@ -265,9 +261,6 @@
     </main>
     
     <div>
-      <button class="bg-pink-500 text-white active:bg-pink-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button" v-on:click="toggleModal()">
-        Open large modal
-      </button>
       <div v-if="showModal" class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center flex">
         <div class="relative w-auto my-6 mx-auto max-w-6xl">
           <!--content-->

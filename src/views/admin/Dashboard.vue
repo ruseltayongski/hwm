@@ -1,21 +1,19 @@
 <script setup lang="ts">
+    /* Popper */
+    import 'https://unpkg.com/@popperjs/core@2';
+    // plugin for charts
+    import '@/style/assets/js/plugins/chartjs.min.js'
+    // plugin for scrollbar
+    import '@/style/assets/js/plugins/perfect-scrollbar.min.js'
     // github button
     import 'https://buttons.github.io/buttons.js'
+    // main script file
+    import { softUiDashBoardTaildwind } from "@/style/assets/js/soft_ui_dashboard"
+
+    import { onMounted } from "vue"
 
     import moment from "moment"
 
-    import Team2 from "@/style/assets/img/curved-images/white-curved.jpeg"
-    import LogoSpotify from "@/style/assets/img/small-logos/logo-spotify.svg"
-    import WavedWhite from "@/style/assets/img/illustrations/rocket-white.png"
-    import RocketWhite from "@/style/assets/img/illustrations/rocket-white.png"
-    import LogoXd from "@/style/assets/img/small-logos/logo-xd.svg"
-    import Team1 from "@/style/assets/img/team-1.jpg"
-    import Team3 from "@/style/assets/img/team-3.jpg"
-    import Team4 from "@/style/assets/img/team-4.jpg"
-    import LogoAtlassian from "@/style/assets/img/small-logos/logo-atlassian.svg"
-    import LogoSlack from "@/style/assets/img/small-logos/logo-slack.svg"
-    import LogoJira from "@/style/assets/img/small-logos/logo-jira.svg"
-    import LogoInvision from "@/style/assets/img/small-logos/logo-invision.svg"
     import curved from "@/style/assets/img/laboratory.jpg"
     import laboratory_transparent from "@/style/assets/img/laboratory_agawn.png"
     
@@ -23,20 +21,9 @@
     import Nav from '@/layout/admin/Nav.vue'
     import Footer from '@/layout/admin/Footer.vue'
 
-    import { ref } from "vue"
-
-    const team_2 = ref(Team2);
-    const logo_spotify = ref(LogoSpotify);
-    const waved_white = ref(WavedWhite);
-    const rocket_white = ref(RocketWhite);
-    const logo_xd = ref(LogoXd);
-    const team_1 = ref(Team1);
-    const team_3 = ref(Team3);
-    const team_4 = ref(Team4);
-    const logo_atlassian = ref(LogoAtlassian);
-    const logo_slack = ref(LogoSlack);
-    const logo_jira = ref(LogoJira);
-    const logo_invision = ref(LogoInvision);
+    onMounted(() => {
+      softUiDashBoardTaildwind()
+    })
 </script>
 <template>
     <SideBar></SideBar>
@@ -57,7 +44,8 @@
                     <div>
                       <p class="mb-0 font-sans font-semibold leading-normal text-sm">Total Employees</p>
                       <h5 class="mb-0 font-bold">
-                        2,300
+                        88,300
+                        <span class="leading-normal text-sm font-weight-bolder text-lime-500">+67%</span>
                       </h5>
                     </div>
                   </div>
@@ -81,6 +69,7 @@
                       <p class="mb-0 font-sans font-semibold leading-normal text-sm">Number of Employee Avail</p>
                       <h5 class="mb-0 font-bold">
                         53,000
+                        <span class="leading-normal text-sm font-weight-bolder text-lime-500">+55%</span>
                       </h5>
                     </div>
                   </div>
@@ -104,6 +93,7 @@
                       <p class="mb-0 font-sans font-semibold leading-normal text-sm">Number of Employee Unavail</p>
                       <h5 class="mb-0 font-bold">
                         3,462
+                        <span class="leading-normal text-red-600 text-sm font-weight-bolder">2%</span>
                       </h5>
                     </div>
                   </div>
@@ -127,6 +117,7 @@
                       <p class="mb-0 font-sans font-semibold leading-normal text-sm">Normal</p>
                       <h5 class="mb-0 font-bold">
                         103,430
+                        <span class="leading-normal text-sm font-weight-bolder text-lime-500">+55%</span>
                       </h5>
                     </div>
                   </div>
@@ -153,6 +144,7 @@
                       <p class="mb-0 font-sans font-semibold leading-normal text-sm">Low Risk</p>
                       <h5 class="mb-0 font-bold">
                         2,300
+                        <span class="leading-normal text-sm font-weight-bolder text-lime-500">+55%</span>
                       </h5>
                     </div>
                   </div>
@@ -176,6 +168,7 @@
                       <p class="mb-0 font-sans font-semibold leading-normal text-sm">High Risk</p>
                       <h5 class="mb-0 font-bold">
                         53,000
+                        <span class="leading-normal text-red-600 text-sm font-weight-bolder">2%</span>
                       </h5>
                     </div>
                   </div>
