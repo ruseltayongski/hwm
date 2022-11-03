@@ -5,7 +5,7 @@ export function retrieveAllLabResults(params: {} = {}) {
 }
 
 export function employeeLaborartoryResult(params: {} = {}) {
-  return req.get(`/employeeLaboratoryResult/${params.userid}`, params);
+  return req.get(`/labresults/lab/${params.userid}`, params);
 }
 
 export function createLaboratoryResult(params: {} = {}) {

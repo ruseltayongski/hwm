@@ -1,13 +1,4 @@
 <script lang="ts" setup>
-  // plugin for charts
-  import '@/style/assets/js/plugins/chartjs.min.js'
-  // plugin for scrollbar
-  import '@/style/assets/js/plugins/perfect-scrollbar.min.js'
-  // github button
-  import 'https://buttons.github.io/buttons.js'
-  // main script file
-  import '@/style/assets/js/soft-ui-dashboard-tailwind.js'
-
   import { reactive, ref } from 'vue'
   import { userLogin } from '@/api/auth'
   import { useTokenStore } from "@/stores"

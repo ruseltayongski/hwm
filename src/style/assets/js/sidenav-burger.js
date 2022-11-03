@@ -1,5 +1,6 @@
 // sidenav transition-burger
 
+var page = window.location.pathname.split("/").pop().split(".")[0]; //new added
 var sidenav = document.querySelector("aside");
 var sidenav_trigger = document.querySelector("[sidenav-trigger]");
 var sidenav_close_button = document.querySelector("[sidenav-close]");
@@ -33,3 +34,4 @@ window.addEventListener("click", function (e) {
     }
   }
 });
+
