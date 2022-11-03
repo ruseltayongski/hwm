@@ -41,7 +41,6 @@
                   <span class="leading-tight text-xs">#MS-415646</span>
                 </div>
                 <div class="flex items-center leading-normal text-sm">
-                  $180
                   <button class="inline-block px-0 py-3 mb-0 ml-6 font-bold leading-normal text-center uppercase align-middle transition-all bg-transparent border-0 rounded-lg shadow-none cursor-pointer ease-soft-in bg-150 text-sm active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 text-slate-700"><i class="mr-1 fas fa-file-pdf text-lg" aria-hidden="true"></i> PDF</button>
                 </div>
               </li>
@@ -51,7 +50,6 @@
                   <span class="leading-tight text-xs">#RV-126749</span>
                 </div>
                 <div class="flex items-center leading-normal text-sm">
-                  $250
                   <button class="inline-block px-0 py-3 mb-0 ml-6 font-bold leading-normal text-center uppercase align-middle transition-all bg-transparent border-0 rounded-lg shadow-none cursor-pointer ease-soft-in bg-150 text-sm active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 text-slate-700"><i class="mr-1 fas fa-file-pdf text-lg" aria-hidden="true"></i> PDF</button>
                 </div>
               </li>
@@ -61,7 +59,6 @@
                   <span class="leading-tight text-xs">#FB-212562</span>
                 </div>
                 <div class="flex items-center leading-normal text-sm">
-                  $560
                   <button class="inline-block px-0 py-3 mb-0 ml-6 font-bold leading-normal text-center uppercase align-middle transition-all bg-transparent border-0 rounded-lg shadow-none cursor-pointer ease-soft-in bg-150 text-sm active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 text-slate-700"><i class="mr-1 fas fa-file-pdf text-lg" aria-hidden="true"></i> PDF</button>
                 </div>
               </li>
@@ -71,7 +68,6 @@
                   <span class="leading-tight text-xs">#QW-103578</span>
                 </div>
                 <div class="flex items-center leading-normal text-sm">
-                  $120
                   <button class="inline-block px-0 py-3 mb-0 ml-6 font-bold leading-normal text-center uppercase align-middle transition-all bg-transparent border-0 rounded-lg shadow-none cursor-pointer ease-soft-in bg-150 text-sm active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 text-slate-700"><i class="mr-1 fas fa-file-pdf text-lg" aria-hidden="true"></i> PDF</button>
                 </div>
               </li>
@@ -81,7 +77,6 @@
                   <span class="leading-tight text-xs">#AR-803481</span>
                 </div>
                 <div class="flex items-center leading-normal text-sm">
-                  $300
                   <button class="inline-block px-0 py-3 mb-0 ml-6 font-bold leading-normal text-center uppercase align-middle transition-all bg-transparent border-0 rounded-lg shadow-none cursor-pointer ease-soft-in bg-150 text-sm active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 text-slate-700"><i class="mr-1 fas fa-file-pdf text-lg" aria-hidden="true"></i> PDF</button>
                 </div>
               </li>

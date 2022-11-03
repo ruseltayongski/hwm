@@ -17,7 +17,7 @@
                   <path d="M21 16.42v3.536a1 1 0 0 1-.93.998c-.437.03-.794.046-1.07.046-8.837 0-16-7.163-16-16 0-.276.015-.633.046-1.07A1 1 0 0 1 4.044 3H7.58a.5.5 0 0 1 .498.45c.023.23.044.413.064.552A13.901 13.901 0 0 0 9.35 8.003c.095.2.033.439-.147.567l-2.158 1.542a13.047 13.047 0 0 0 6.844 6.844l1.54-2.154a.462.462 0 0 1 .573-.149 13.901 13.901 0 0 0 4 1.205c.139.02.322.042.55.064a.5.5 0 0 1 .449.498z"></path>                   
                 </svg></span> <div class="hidden lg:block">
                 <div class="text-sm">Call Us</div>
-                <div class="font-bold text-primary-500">(208) 260-9740</div>
+                <div class="font-bold text-primary-500">(032) 260-9740 / local 208</div>
               </div> </a> 
             <a href="https://goo.gl/maps/a7CekE12NkeMzjLY7" target="_blank" class="group hover:text-primary-600 inline-flex items-center leading-tight text-gray-500"> <span class="bg-primary-500 group-hover:bg-primary-600 p-2 rounded text-white lg:mr-2"> <svg viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5"> 
                   <path d="M18.364 17.364L12 23.728l-6.364-6.364a9 9 0 1 1 12.728 0zM12 13a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/> 
@@ -65,7 +65,7 @@ To Your Loved Ones</h1>
               <h3 class="font-bold mb-2 text-4xl text-gray-800">Welcome To Health Hub</h3> 
             </div>             
           </div>
-          <div class="flex flex-wrap -mx-4  items-center"> 
+          <!-- <div class="flex flex-wrap -mx-4  items-center"> 
             <div class="mx-auto px-4 w-full lg:w-11/12 xl:w-8/12"> 
               <div class="-mx-2 flex flex-wrap"> 
                 <div class="p-2 w-full sm:w-4/12"> 
@@ -88,7 +88,7 @@ To Your Loved Ones</h1>
                 </div>                 
               </div>               
             </div>             
-          </div>           
+          </div>            -->
         </div>         
       </section>
       <!-- <div class="container mx-auto py-2">
@@ -471,18 +471,18 @@ To Your Loved Ones</h1>
                   <li class="mb-4"> 
                     <a href="#" class="hover:text-primary-300 text-white">Our Services</a> 
                   </li>                   
-                  <li class="mb-4"> 
+                  <!-- <li class="mb-4"> 
                     <a href="#" class="hover:text-primary-300 text-white">Find a Doctor</a> 
-                  </li>                   
+                  </li>                    -->
                   <li class="mb-4"> 
                     <a href="#" class="hover:text-primary-300 text-white">Our Departments</a> 
                   </li>
-                  <li class="mb-4"> 
+                  <!-- <li class="mb-4"> 
                     <a href="#" class="hover:text-primary-300 text-white">News & Updates</a> 
-                  </li>                   
+                  </li>                    -->
                 </ul>                 
               </div>               
-              <div class="px-4 w-full sm:w-6/12"> 
+              <!-- <div class="px-4 w-full sm:w-6/12"> 
                 <ul> 
                   <li class="mb-4"> 
                     <a href="#" class="hover:text-primary-300 text-white">Careers</a> 
@@ -497,10 +497,10 @@ To Your Loved Ones</h1>
                     <a href="#" class="hover:text-primary-300 text-white">Success Stories</a> 
                   </li>                   
                 </ul>                 
-              </div>               
+              </div>                -->
             </div>             
           </div>           
-          <div class="p-4 w-full lg:w-4/12"> 
+          <!-- <div class="p-4 w-full lg:w-4/12"> 
             <h2 class="font-bold mb-6 text-primary-500 text-xl">Latest Posts</h2> 
             <div class="space-y-4">
               <div class="flex flex-wrap items-center w-full">
@@ -531,7 +531,7 @@ To Your Loved Ones</h1>
                 </div>
               </div>
             </div>             
-          </div>           
+          </div>            -->
           <div class="p-4 w-full lg:w-4/12"> 
             <h2 class="font-bold mb-6 text-primary-500 text-xl">Newsletter</h2> 
             <p class="mb-4">                             Subscribe to our newsletter and get exclusive updates directly in your inbox. </p> 
