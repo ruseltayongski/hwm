@@ -1,18 +1,16 @@
 import { createApp } from 'vue'
 import { createPinia } from "pinia";
-// import './style.css'
-import 'tailwindcss/tailwind.css'
 
-//tailwind notification
+import './tailwind.css'
+import 'tailwindcss/tailwind.css'
+import 'tw-elements'
+
 import Notifications from 'notiwind'
 
-// import the package
 import VueAwesomePaginate from "vue-awesome-paginate";
 
-// import the necessary css file
 import "vue-awesome-paginate/dist/style.css";
 
-/* Font Awesome Icons */
 import 'https://kit.fontawesome.com/42d5adcbca.js';
 
 import App from './App.vue'

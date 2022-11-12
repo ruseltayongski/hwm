@@ -1,20 +1,47 @@
 <script setup lang="ts">
-    //import LabResultService from "@/api/LabResultDataService";
-    import LabResultService from "@/api/laboratory_req";
-    LabResultService.post("/labresults/",{
-        "userId": "0454",
-        "systole": 9999,
-        "diastole": 9999,
-        "rb_sugar": "ALEX AGAWN",
-        "other_test": "ALEX AGAWN",
-        "other_test_result": "WBC_result",
-        "created": "10-28-2022",
-        "updated": "10-28-2022"
-    }
-    ).then(() => {
-    console.log("success")
-    });
+    import { onMounted } from "vue"
+    import { initTwDatepicker } from "@/stores/tw_datepicker"
+
+    // const props = defineProps({
+    //     search_keyword: {
+    //       type : String,
+    //       default: ""
+    //     }  
+    // });
+    
+    onMounted(() => {
+        // initTwDatepicker().increaseCount()
+        // if(initTwDatepicker().count === 1) {
+        //     console.log(initTwDatepicker().count)
+        //     import('tw-elements').then(m => {
+        //         // use my library here or call a method that uses it
+        //     })
+        // } else {
+        //     console.log("false")
+        // }
+    })
 </script>
 <template>
-    <h1 class="home">This is About! ahahaha</h1>
+    <h1>about</h1>
+    <div class="flex items-center justify-center">
+      <div class="datepicker relative form-floating mb-3 xl:w-96" data-mdb-toggle-button="false">
+        <input type="text"
+          class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+          placeholder="Select a date" />
+        <label for="floatingInput" class="text-gray-700">Select a date</label>
+        <button class="datepicker-toggle-button" data-mdb-toggle="datepicker">
+          <i class="fas fa-calendar datepicker-toggle-icon"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="flex items-center justify-center">
+      <div class="datepicker relative form-floating mb-3 xl:w-96" data-mdb-toggle-button="false">
+        <input type="text"
+          class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+          placeholder="Select a date" data-mdb-toggle="datepicker" />
+        <label for="floatingInput" class="text-gray-700">Select a date</label>
+      </div>
+    </div>
+    
 </template>

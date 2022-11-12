@@ -4,22 +4,30 @@
     import { useRouter } from "vue-router"
     import { useTokenStore } from "@/stores"
     import { getUserProfile } from "@/api/auth"
+    import { initUserProfile } from "@/stores/user_profile"
 
     import LogoCt from "@/style/assets/img/doh.png"
 
-    const logo_ct = ref(LogoCt)
-    const tokenStore = useTokenStore()
     const router = useRouter()
     const router_path = router.currentRoute.value.path
+    const logo_ct = ref(LogoCt)
+    const tokenStore = useTokenStore()
+
+    const userProfileStore = initUserProfile();
     const user_profile = ref({ fname : "", lname : "" })
     
     onMounted(() => {
-      _getUserProfile()
+        if(userProfileStore.getProfile.id) {
+          user_profile.value = userProfileStore.getProfile
+        } else {
+          _getUserProfile()
+        }
     })
 
     const _getUserProfile = async () => {
-        user_profile.value = await getUserProfile()
-        console.log(user_profile.value)
+        const response = await getUserProfile()
+        userProfileStore.setProfile(response)
+        user_profile.value = response
     }
     
     const handleClickSignOut = () => {
@@ -31,7 +39,6 @@
             path: "/",
         });
     };
-
 </script>
 <template>
     <!-- sidenav  -->
