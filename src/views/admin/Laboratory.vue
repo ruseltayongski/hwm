@@ -4,42 +4,51 @@
     import 'https://buttons.github.io/buttons.js'
     // main script file
     import { softUiDashBoardTaildwind } from "@/style/assets/js/soft_ui_dashboard"
-    
+
     //component
     import SideBar from '@/layout/admin/SideBar.vue'
     import Nav from '@/layout/admin/Nav.vue'
     import Footer from '@/layout/admin/Footer.vue'
 
     import { ref, onMounted } from "vue"
-    import { useTokenStore } from "@/stores"
     import { getAllActiveUser } from "@/api/auth"
     import { retrieveAllLabResults,createLaboratoryResult,employeeLaborartoryResult } from "@/api/laboratory"
     
     import { notify } from "notiwind"
-    
     import moment from "moment"
-
     import html2pdf from "html2pdf.js";
 
-    const tokenStore = useTokenStore();
-    //console.log(tokenStore.value)
 
     const get_all_active_user = ref([])
     const active_total_page = ref(0)
-    const showModal = ref(false)
+
+    const userid_save = ref("")
     const systole = ref("")
     const diastole = ref("")
+    const bp_date = ref("")
     const rb_sugar = ref("")
-    const other_test_result = ref("")
-    const other_test = ref("")
-    const userid_save = ref("")
-
-    const props = defineProps({
-        search_keyword: {
-          type : String,
-          default: ""
-        }  
-    });
+    const rb_sugar_date = ref("")
+    const other_test = ref([{}])
+    const xray = ref({
+      result: "",
+      result_date: "",
+      disabled: true
+    })
+    const xray_flag = ref(false)
+    const drugs = ref({
+      result: "",
+      result_date: "",
+      disabled: true
+    })
+    const drugs_flag = ref(false)
+    const blood = ref({
+      result: "",
+      result_date: "",
+      disabled: true
+    })
+    const blood_flag = ref(false)
+    const laboratory_status = ref("")
+    const el_modal = ref<HTMLInputElement | null>(null)
 
     onMounted(() => {
       _getAllActiveUser({})
@@ -49,10 +58,6 @@
 
     const _getAllLabResult = async () => {
         await retrieveAllLabResults() 
-    }
-
-    const _employeeLaborartoryResult = async (params: {}) => {
-        await employeeLaborartoryResult(params)
     }
 
     const _getAllActiveUser = async (params: {}) => {
@@ -79,15 +84,10 @@
 
     const handleAddLaboratory = (userid:"") => {
         userid_save.value = userid
-        showModal.value = true
     }
 
     const handleSearchEmployee = (get_search_keyword : String) => {
         _getAllActiveUser({ search_keyword : get_search_keyword })
-    }
-
-    const handleCloseModal = () => {
-      showModal.value = false
     }
 
     const handleSaveLaboratory = async () => {
@@ -96,19 +96,78 @@
         title: "Success",
         text: "Laboratory was successfully saved!"
       }, 1000)
-      const params = {
-        systole : systole.value,
-        diastole : diastole.value,
-        rb_sugar : rb_sugar.value,
-        other_test_result : other_test_result.value,
-        other_test : other_test.value,
-        userId : userid_save.value,
-        created_at : moment().format('MM-DD-YYYY HH:mm:ss'),
-        updated_at : moment().format('MM-DD-YYYY HH:mm:ss')
+      el_modal.value?.click()
+ 
+      other_test.value = []
+      if(xray_flag.value) {
+        other_test.value.push({
+          X_RAY: {
+            result : xray.value.result,
+            result_date : xray.value.result_date
+          }
+        })
       }
-      await createLaboratoryResult(params)
+      if(drugs_flag.value) {
+        other_test.value.push({
+          Drugs: {
+            result : drugs.value.result,
+            result_date : drugs.value.result_date
+          }
+        })
+      }
+      if(blood_flag.value) {
+        other_test.value.push({
+          Blood: {
+            result : blood.value.result,
+            result_date : blood.value.result_date
+          }
+        })
+      }
 
-      showModal.value = false
+      const params = {
+        "userId": userid_save.value,
+        "systole": systole.value,
+        "diastole": diastole.value,
+        "bp_date": bp_date.value,
+        "rb_sugar": rb_sugar.value,
+        "rb_sugar_date": rb_sugar_date.value,
+        "other_test": other_test.value,
+        "laboratory_status" : laboratory_status.value,
+        "laboratoryCreated": moment().format('YYYY-MM-DD HH:mm:ss'),
+        "laboratoryUpdated": moment().format('YYYY-MM-DD HH:mm:ss')
+      }
+
+      const add_lab_result = get_all_active_user.value.filter((user) => user.userid == params.userId);
+      if(add_lab_result) { //find the users
+        add_lab_result[0].lab_result.push(params) //push the new laboratory result
+      }
+
+      console.log(get_all_active_user.value)
+
+      await createLaboratoryResult(params)
+    }
+
+    const handleXray = (e) => {
+      xray_flag.value = e.target.checked
+      xray.value.disabled = e.target.checked ? false : true;
+    }
+
+    const handleDrugs = (e) => {
+      drugs_flag.value = e.target.checked
+      drugs.value.disabled = e.target.checked ? false : true;
+    }
+
+    const handleBlood = (e) => {
+      blood_flag.value = e.target.checked
+      blood.value.disabled = e.target.checked ? false : true;
+    }
+
+    const handleLowRisk = (e) => {
+      laboratory_status.value = e.target.checked ? e.target.value : ""
+    }
+
+    const handleHighRisk = (e) => {
+      laboratory_status.value = e.target.checked ? e.target.value : ""
     }
     
     const exportToPDF = async () => {
@@ -125,7 +184,7 @@
   
       <Nav @searchEmployee="handleSearchEmployee"></Nav>
 
-      <div class="w-full px-6 py-6 mx-auto">
+      <div class="w-full px-6 py-6 mx-auto">        
         <!-- table 1 -->
         <div class="flex flex-wrap -mx-3">
           <div class="flex-none w-full max-w-full px-3">
@@ -170,68 +229,10 @@
                           <span class="font-semibold leading-tight text-xs text-slate-400">11/01/19</span>
                         </td>
                         <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                          <button class="inline-block px-8 py-2 mb-0 font-bold text-center uppercase align-middle transition-all bg-transparent border border-solid rounded-lg shadow-none cursor-pointer leading-pro ease-soft-in text-xs bg-150 active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 border-fuchsia-500 text-fuchsia-500 hover:opacity-75" @click="handleAddLaboratory(user.userid)">Add Laboratory</button>
+                          <button class="inline-block px-8 py-2 mb-0 font-bold text-center uppercase align-middle transition-all bg-transparent border border-solid rounded-lg shadow-none cursor-pointer leading-pro ease-soft-in text-xs bg-150 active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 border-fuchsia-500 text-fuchsia-500 hover:opacity-75" @click="handleAddLaboratory(user.userid)" data-bs-toggle="modal" data-bs-target="#exampleModalXl">Add Laboratory</button>
                         </td>
                         <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
                           <button v-for="lab in user.lab_result" :key="lab.id" @click="exportToPDF" class="inline-block px-0 py-3 mb-0 ml-6 font-bold leading-normal text-center uppercase align-middle transition-all bg-transparent border-0 rounded-lg shadow-none cursor-pointer ease-soft-in bg-150 text-sm active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 text-slate-700"><i class="mr-1 fas fa-file-pdf text-lg" aria-hidden="true"></i> PDF</button>
-                          <!-- <div class="flex-auto p-4">
-                            <div class="before:border-r-solid relative before:absolute before:top-0 before:left-4 before:h-full before:border-r-2 before:border-r-slate-100 before:content-[''] before:lg:-ml-px">
-                              <div class="relative mb-4 mt-0 after:clear-both after:table after:content-[''] cursor-pointer" @click="exportToPDF">
-                                <span class="w-6.5 h-6.5 text-base absolute left-4 z-10 inline-flex -translate-x-1/2 items-center justify-center rounded-full bg-white text-center font-semibold">
-                                  <i class="relative z-10 text-transparent ni leading-none ni-bell-55 leading-pro bg-gradient-to-tl from-green-600 to-lime-400 bg-clip-text fill-transparent"></i>
-                                </span>
-                                <div class="ml-11.252 pt-1.4 lg:max-w-120 relative -top-1.5 w-auto">
-                                  <h6 class="mb-0 font-semibold leading-normal text-sm text-slate-700">$2400, Design changes</h6>
-                                  <p class="mt-1 mb-0 font-semibold leading-tight text-xs text-slate-400">22 DEC 7:20 PM</p>
-                                </div>
-                              </div>
-                              <div class="relative mb-4 after:clear-both after:table after:content-['']">
-                                <span class="w-6.5 h-6.5 text-base absolute left-4 z-10 inline-flex -translate-x-1/2 items-center justify-center rounded-full bg-white text-center font-semibold">
-                                  <i class="relative z-10 text-transparent ni leading-none ni-html5 leading-pro bg-gradient-to-tl from-red-600 to-rose-400 bg-clip-text fill-transparent"></i>
-                                </span>
-                                <div class="ml-11.252 pt-1.4 lg:max-w-120 relative -top-1.5 w-auto">
-                                  <h6 class="mb-0 font-semibold leading-normal text-sm text-slate-700">New order #1832412</h6>
-                                  <p class="mt-1 mb-0 font-semibold leading-tight text-xs text-slate-400">21 DEC 11 PM</p>
-                                </div>
-                              </div>
-                              <div class="relative mb-4 after:clear-both after:table after:content-['']">
-                                <span class="w-6.5 h-6.5 text-base absolute left-4 z-10 inline-flex -translate-x-1/2 items-center justify-center rounded-full bg-white text-center font-semibold">
-                                  <i class="relative z-10 text-transparent ni leading-none ni-cart leading-pro bg-gradient-to-tl from-blue-600 to-cyan-400 bg-clip-text fill-transparent"></i>
-                                </span>
-                                <div class="ml-11.252 pt-1.4 lg:max-w-120 relative -top-1.5 w-auto">
-                                  <h6 class="mb-0 font-semibold leading-normal text-sm text-slate-700">Server payments for April</h6>
-                                  <p class="mt-1 mb-0 font-semibold leading-tight text-xs text-slate-400">21 DEC 9:34 PM</p>
-                                </div>
-                              </div>
-                              <div class="relative mb-4 after:clear-both after:table after:content-['']">
-                                <span class="w-6.5 h-6.5 text-base absolute left-4 z-10 inline-flex -translate-x-1/2 items-center justify-center rounded-full bg-white text-center font-semibold">
-                                  <i class="relative z-10 text-transparent ni leading-none ni-credit-card leading-pro bg-gradient-to-tl from-red-500 to-yellow-400 bg-clip-text fill-transparent"></i>
-                                </span>
-                                <div class="ml-11.252 pt-1.4 lg:max-w-120 relative -top-1.5 w-auto">
-                                  <h6 class="mb-0 font-semibold leading-normal text-sm text-slate-700">New card added for order #4395133</h6>
-                                  <p class="mt-1 mb-0 font-semibold leading-tight text-xs text-slate-400">20 DEC 2:20 AM</p>
-                                </div>
-                              </div>
-                              <div class="relative mb-4 after:clear-both after:table after:content-['']">
-                                <span class="w-6.5 h-6.5 text-base absolute left-4 z-10 inline-flex -translate-x-1/2 items-center justify-center rounded-full bg-white text-center font-semibold">
-                                  <i class="relative z-10 text-transparent ni leading-none ni-key-25 leading-pro bg-gradient-to-tl from-purple-700 to-pink-500 bg-clip-text fill-transparent"></i>
-                                </span>
-                                <div class="ml-11.252 pt-1.4 lg:max-w-120 relative -top-1.5 w-auto">
-                                  <h6 class="mb-0 font-semibold leading-normal text-sm text-slate-700">Unlock packages for development</h6>
-                                  <p class="mt-1 mb-0 font-semibold leading-tight text-xs text-slate-400">18 DEC 4:54 AM</p>
-                                </div>
-                              </div>
-                              <div class="relative mb-0 after:clear-both after:table after:content-['']">
-                                <span class="w-6.5 h-6.5 text-base absolute left-4 z-10 inline-flex -translate-x-1/2 items-center justify-center rounded-full bg-white text-center font-semibold">
-                                  <i class="relative z-10 text-transparent ni leading-none ni-money-coins leading-pro bg-gradient-to-tl from-gray-900 to-slate-800 bg-clip-text fill-transparent"></i>
-                                </span>
-                                <div class="ml-11.252 pt-1.4 lg:max-w-120 relative -top-1.5 w-auto">
-                                  <h6 class="mb-0 font-semibold leading-normal text-sm text-slate-700">New order #9583120</h6>
-                                  <p class="mt-1 mb-0 font-semibold leading-tight text-xs text-slate-400">17 DEC</p>
-                                </div>
-                              </div>
-                            </div>
-                          </div> -->
                         </td>
                       </tr>
                     </tbody>
@@ -254,26 +255,24 @@
             </div>
           </div>
         </div>
-        
         <Footer></Footer>
-
       </div>
     </main>
-    
-    <div>
-      <div v-if="showModal" class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center flex">
-        <div class="relative w-auto my-6 mx-auto max-w-6xl">
-          <!--content-->
-          <div class="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
-            <!--header-->
-            <div class="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
-              <h3 class="text-3xl font-semibold">
-                Add Laboratory
-              </h3>
-            </div>
-            <!--body-->
-            <div class="relative p-6 flex-auto">
-              <form class="w-full max-w-lg">
+  
+    <!-- Modal -->
+    <div class="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto" id="exampleModalXl" tabindex="-1"          aria-labelledby="exampleModalXlLabel" aria-modal="true" role="dialog" ref="el_modal">
+      <div class="modal-dialog modal-lg relative w-auto pointer-events-none">
+        <div class="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current">
+          <div class="modal-header flex flex-shrink-0 items-center justify-between p-4 border-b border-gray-200 rounded-t-md">
+            <h5 class="text-lg font-medium leading-normal text-gray-800" id="exampleModalXlLabel">
+              Extra large modal
+            </h5>
+            <button type="button"
+              class="btn-close box-content w-4 h-4 p-1 text-black border-none rounded-none opacity-50 focus:shadow-none focus:outline-none focus:opacity-100 hover:text-black hover:opacity-75 hover:no-underline"
+              data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body relative p-4">
+            <form class="w-full max-w-lg">
                 <div class="flex flex-wrap mb-6 bg-green-200 pt-2">
                   <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
                       Blood Pressure
@@ -298,6 +297,15 @@
                 <div class="flex flex-wrap -mx-3 mb-6">
                   <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                     <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
+                      BP Date
+                    </label>
+                    <input v-model="bp_date" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-first-name" type="date" placeholder="Systole">
+                    <p class="text-red-500 text-xs italic">Please fill out this field.</p>
+                  </div>
+                </div>
+                <div class="flex flex-wrap -mx-3 mb-6">
+                  <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
                       Random Blood Sugar
                     </label>
                     <input v-model="rb_sugar" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-first-name" type="text" placeholder="Random Blood Sugar">
@@ -305,9 +313,9 @@
                   </div>
                   <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                     <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
-                      Date
+                      RBS Date
                     </label>
-                    <input v-model="rb_sugar" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-first-name" type="text" placeholder="Date">
+                    <input v-model="rb_sugar_date" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-first-name" type="date" placeholder="Date">
                     <p class="text-red-500 text-xs italic">Please fill out this field.</p>
                   </div>
                 </div>
@@ -316,86 +324,78 @@
                       Laboratory Test
                   </label>
                 </div>
-                <!-- <div class="flex flex-wrap -mx-3 mb-6">
-                  <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
-                      Laboratory Test
-                    </label>
-                    <input v-model="other_test_result" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-first-name" type="text" placeholder="other_test_result">
-                  </div>
-                  <div class="w-full md:w-1/2 px-3">
-                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
-                      {{ other_test_result }} Result
-                    </label>
-                    <input v-model="other_test" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder="other_test">
-                  </div>
-                </div> -->
                 <ul class="w-100 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                   <li class="w-full rounded-t-lg border-b border-gray-200 dark:border-gray-600">
-                      <div class="flex items-center pl-3">
-                          <input id="vue-checkbox" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500    dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                          <label for="vue-checkbox" class="py-3 ml-2 w-full text-sm font-medium text-gray-900 dark:text-gray-300">X-RAY</label>
-                          <textarea id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Your message..."></textarea>
-                      </div>
+                    <div class="flex items-center pl-3">
+                        <input @change="handleXray" id="vue-checkbox" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500  dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                        <label for="vue-checkbox" class="py-3 ml-2 w-full text-sm font-medium text-gray-900 dark:text-gray-300">X-RAY</label>
+                        <input v-model="xray.result" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="date" placeholder="date" 
+                        :disabled="xray.disabled">
+                        &nbsp;
+                        <input v-model="xray.result_date" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder="result"
+                        :disabled="xray.disabled"/>
+                    </div>
                   </li>
                   <li class="w-full rounded-t-lg border-b border-gray-200 dark:border-gray-600">
-                      <div class="flex items-center pl-3">
-                          <input id="react-checkbox" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                          <label for="react-checkbox" class="py-3 ml-2 w-full text-sm font-medium text-gray-900 dark:text-gray-300">Drugs</label>
-                          <textarea id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Your message..."></textarea>
-                      </div>
+                    <div class="flex items-center pl-3">
+                        <input @change="handleDrugs" id="react-checkbox" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                        <label for="react-checkbox" class="py-3 ml-2 w-full text-sm font-medium text-gray-900 dark:text-gray-300">Drugs</label>
+                        <input v-model="drugs.result" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="date" placeholder="date"
+                        :disabled="drugs.disabled"/>
+                        &nbsp;
+                        <input v-model="drugs.result_date" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder="result"
+                        :disabled="drugs.disabled"/>
+                    </div>
                   </li>
                   <li class="w-full rounded-t-lg border-b border-gray-200 dark:border-gray-600">
-                      <div class="flex items-center pl-3">
-                          <input id="angular-checkbox" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                          <label for="angular-checkbox" class="py-3 ml-2 w-full text-sm font-medium text-gray-900 dark:text-gray-300">Routine Unalysis</label>
-                          <textarea id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Your message..."></textarea>
-                      </div>
-                  </li>
-                  <li class="w-full rounded-t-lg border-b border-gray-200 dark:border-gray-600">
-                      <div class="flex items-center pl-3">
-                          <input id="laravel-checkbox" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                          <label for="laravel-checkbox" class="py-3 ml-2 w-full text-sm font-medium text-gray-900 dark:text-gray-300">Complete Blood Count</label>
-                          <textarea id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Your message..."></textarea>
-                      </div>
+                    <div class="flex items-center pl-3">
+                      <input @change="handleBlood" id="laravel-checkbox" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                      <label for="Blood-checkbox" class="py-3 ml-2 w-full text-sm font-medium text-gray-900 dark:text-gray-300">Complete Blood Count</label>
+                      <input v-model="blood.result" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="date" placeholder="date"
+                      :disabled="blood.disabled"/>
+                      &nbsp;
+                      <input v-model="blood.result_date" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder="result" 
+                      :disabled="blood.disabled"/>
+                    </div>
                   </li>
               </ul>
               <div class="flex flex-wrap mb-6 bg-green-200 pt-2">
-                  <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
-                      Laboratory Status
-                  </label>
-                </div>
-                <ul class="items-center w-full text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 sm:flex dark:bg-gray-700  dark:border-gray-600 dark:text-white">
-                    <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                        <div class="flex items-center pl-3">
-                            <input id="horizontal-list-radio-id" type="radio" value="" name="list-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                            <label for="horizontal-list-radio-id" class="py-3 ml-2 w-full text-sm font-medium text-gray-900 dark:text-gray-300">Low Risk</label>
-                        </div>
-                    </li>
-                    <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                        <div class="flex items-center pl-3">
-                            <input id="horizontal-list-radio-millitary" type="radio" value="" name="list-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                            <label for="horizontal-list-radio-millitary" class="py-3 ml-2 w-full text-sm font-medium text-gray-900 dark:text-gray-300">High Risk</label>
-                        </div>
-                    </li>
-                </ul>
-                <div class="mt-5"></div>
-              </form>
-            </div>
-            <!--footer-->
-            <div class="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
-              <button class="inline-block px-8 py-2 mb-0 font-bold text-center uppercase align-middle transition-all bg-transparent border border-solid rounded-lg shadow-none cursor-pointer leading-pro ease-soft-in text-xs bg-150 active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 border-fuchsia-500 text-fuchsia-500 hover:opacity-75 mr-4" type="button" @click="handleCloseModal">
-                Close
-              </button>
-              <button class="inline-block px-8 py-2 mb-0 font-bold text-center uppercase align-middle transition-all bg-transparent border border-solid rounded-lg shadow-none cursor-pointer leading-pro ease-soft-in text-xs bg-150 active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 border-fuchsia-500 text-fuchsia-500 hover:opacity-75" type="button" @click="handleSaveLaboratory">
-                Save Changes
-              </button>
-            </div>
+                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
+                    Laboratory Status
+                </label>
+              </div>
+              <ul class="items-center w-full text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 sm:flex dark:bg-gray-700  dark:border-gray-600 dark:text-white">
+                  <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                      <div class="flex items-center pl-3">
+                          <input id="horizontal-list-radio-id" @change="handleLowRisk" type="radio" value="low_risk" name="laboratory_status" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                          <label for="horizontal-list-radio-id" class="py-3 ml-2 w-full text-sm font-medium text-gray-900 dark:text-gray-300">Low Risk</label>
+                      </div>
+                  </li>
+                  <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                      <div class="flex items-center pl-3">
+                          <input id="horizontal-list-radio-millitary" @change="handleHighRisk" type="radio" value="high_risk" name="laboratory_status" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                          <label for="horizontal-list-radio-millitary" class="py-3 ml-2 w-full text-sm font-medium text-gray-900 dark:text-gray-300">High Risk</label>
+                      </div>
+                  </li>
+              </ul>
+              <div class="mt-5"></div>
+            </form>
           </div>
+
+          <!--footer-->
+          <div class="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
+            <button class="inline-block px-8 py-2 mb-0 font-bold text-center uppercase align-middle transition-all bg-transparent border border-solid rounded-lg shadow-none cursor-pointer leading-pro ease-soft-in text-xs bg-150 active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 border-fuchsia-500 text-fuchsia-500 hover:opacity-75 mr-4" type="button" data-bs-dismiss="modal">
+              Close
+            </button>
+            <button class="inline-block px-8 py-2 mb-0 font-bold text-center uppercase align-middle transition-all bg-transparent border border-solid rounded-lg shadow-none cursor-pointer leading-pro ease-soft-in text-xs bg-150 active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25 border-fuchsia-500 text-fuchsia-500 hover:opacity-75" type="button" @click="handleSaveLaboratory">
+              Save Changes
+            </button>
+          </div>
+
         </div>
       </div>
-      <div v-if="showModal" class="opacity-25 fixed inset-0 z-40 bg-black"></div>
-  </div>
+    </div>
+
 </template>
 
 <style scoped>
