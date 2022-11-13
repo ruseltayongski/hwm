@@ -4,6 +4,7 @@
     import 'https://buttons.github.io/buttons.js'
     // main script file
     import { softUiDashBoardTaildwind } from "@/style/assets/js/soft_ui_dashboard"
+    import { tailwindDatepicker } from "@/style/assets/js/tailwind-datepicker"
 
     //component
     import SideBar from '@/layout/admin/SideBar.vue'
@@ -34,26 +35,29 @@
       result_date: "",
       disabled: true
     })
+    const xray_result_date = ref<HTMLInputElement | null>(null)
     const xray_flag = ref(false)
     const drugs = ref({
       result: "",
-      result_date: "",
       disabled: true
     })
+    const drugs_result_date = ref<HTMLInputElement | null>(null)
     const drugs_flag = ref(false)
     const blood = ref({
       result: "",
-      result_date: "",
       disabled: true
     })
+    const blood_result_date = ref<HTMLInputElement | null>(null)
     const blood_flag = ref(false)
     const laboratory_status = ref("")
     const el_modal = ref<HTMLInputElement | null>(null)
+    const laboratory_form = ref<HTMLInputElement | null>(null)
 
     onMounted(() => {
       _getAllActiveUser({})
       _getAllLabResult()
       softUiDashBoardTaildwind()
+      tailwindDatepicker()
     })
 
     const _getAllLabResult = async () => {
@@ -90,6 +94,16 @@
         _getAllActiveUser({ search_keyword : get_search_keyword })
     }
 
+    const resetTheForm = () => {
+        xray.value.disabled = true
+        xray.value.result = ""
+        drugs.value.disabled = true
+        drugs.value.result = ""
+        blood.value.disabled = true
+        blood.value.result = ""
+        laboratory_form.value?.reset() //reset afor datepicker
+    }
+
     const handleSaveLaboratory = async () => {
       notify({
         group: "foo",
@@ -97,13 +111,13 @@
         text: "Laboratory was successfully saved!"
       }, 1000)
       el_modal.value?.click()
- 
+      
       other_test.value = []
       if(xray_flag.value) {
         other_test.value.push({
           X_RAY: {
             result : xray.value.result,
-            result_date : xray.value.result_date
+            result_date : moment(xray_result_date.value?.value,'DD-MM-YYYY').format('YYYY-MM-DD')
           }
         })
       }
@@ -111,7 +125,7 @@
         other_test.value.push({
           Drugs: {
             result : drugs.value.result,
-            result_date : drugs.value.result_date
+            result_date : moment(drugs_result_date.value?.value,'DD-MM-YYYY').format('YYYY-MM-DD')
           }
         })
       }
@@ -119,7 +133,7 @@
         other_test.value.push({
           Blood: {
             result : blood.value.result,
-            result_date : blood.value.result_date
+            result_date : moment(blood_result_date.value?.value,'DD-MM-YYYY').format('YYYY-MM-DD')
           }
         })
       }
@@ -142,9 +156,11 @@
         add_lab_result[0].lab_result.push(params) //push the new laboratory result
       }
 
-      console.log(get_all_active_user.value)
+      console.log(other_test.value)
+      
+      //await createLaboratoryResult(params) // insert into mongo db
 
-      await createLaboratoryResult(params)
+      resetTheForm()
     }
 
     const handleXray = (e) => {
@@ -260,7 +276,7 @@
     </main>
   
     <!-- Modal -->
-    <div class="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto" id="exampleModalXl" tabindex="-1"          aria-labelledby="exampleModalXlLabel" aria-modal="true" role="dialog" ref="el_modal">
+    <div class="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto" id="exampleModalXl" tabindex="-1" aria-labelledby="exampleModalXlLabel" aria-modal="true" role="dialog" ref="el_modal">
       <div class="modal-dialog modal-lg relative w-auto pointer-events-none">
         <div class="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current">
           <div class="modal-header flex flex-shrink-0 items-center justify-between p-4 border-b border-gray-200 rounded-t-md">
@@ -272,8 +288,8 @@
               data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body relative p-4">
-            <form class="w-full max-w-lg">
-                <div class="flex flex-wrap mb-6 bg-green-200 pt-2">
+            <form class="w-full" ref="laboratory_form">
+                <div class="flex flex-wrap mb-6 pt-2">
                   <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
                       Blood Pressure
                   </label>
@@ -319,7 +335,7 @@
                     <p class="text-red-500 text-xs italic">Please fill out this field.</p>
                   </div>
                 </div>
-                <div class="flex flex-wrap mb-6 bg-green-200 pt-2">
+                <div class="flex flex-wrap mb-6 pt-2">
                   <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
                       Laboratory Test
                   </label>
@@ -329,21 +345,73 @@
                     <div class="flex items-center pl-3">
                         <input @change="handleXray" id="vue-checkbox" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500  dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
                         <label for="vue-checkbox" class="py-3 ml-2 w-full text-sm font-medium text-gray-900 dark:text-gray-300">X-RAY</label>
-                        <input v-model="xray.result" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="date" placeholder="date" 
-                        :disabled="xray.disabled">
+                        <div class="flex items-center justify-center">
+                          <div class="datepicker relative form-floating mb-3 xl:w-96" >
+                            <input type="text"
+                              class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid 
+                              border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                              placeholder="Select a dateasdsad" data-mdb-toggle="datepicker" 
+                              :disabled="xray.disabled"
+                              ref="xray_result_date"
+                              /> <!-- bawal butangan og v-model ang datepicker ky ma undefiend -->
+                            <label for="floatingInput" class="text-gray-700">Select a date</label>
+                          </div>
+                        </div>
                         &nbsp;
-                        <input v-model="xray.result_date" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder="result"
-                        :disabled="xray.disabled"/>
+                        <!-- <input v-model="xray.result" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 
+                        px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" 
+                        id="grid-last-name" 
+                        type="text" 
+                        placeholder="Input result"
+                        :disabled="xray.disabled"/> -->
+                        <input
+                          v-model="xray.result"
+                          :disabled="xray.disabled"
+                          type="text"
+                          class="
+                            form-control
+                            block
+                            w-full
+                            px-4
+                            py-2
+                            text-xl
+                            font-normal
+                            text-gray-700
+                            bg-white bg-clip-padding
+                            border border-solid border-gray-300
+                            rounded
+                            transition
+                            ease-in-out
+                            m-0
+                            focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none
+                          "
+                          id="exampleFormControlInput2"
+                          placeholder="Input Result"
+                        />
                     </div>
                   </li>
                   <li class="w-full rounded-t-lg border-b border-gray-200 dark:border-gray-600">
                     <div class="flex items-center pl-3">
-                        <input @change="handleDrugs" id="react-checkbox" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                        <input @change="handleDrugs" id="react-checkbox" type="checkbox" 
+                        class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 
+                        dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
                         <label for="react-checkbox" class="py-3 ml-2 w-full text-sm font-medium text-gray-900 dark:text-gray-300">Drugs</label>
-                        <input v-model="drugs.result" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="date" placeholder="date"
-                        :disabled="drugs.disabled"/>
+                        <div class="flex items-center justify-center">
+                        <div class="datepicker relative form-floating mb-3 xl:w-96">
+                            <input type="text"
+                              class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border 
+                              border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 
+                              focus:outline-none"
+                              placeholder="Select a date" data-mdb-toggle="datepicker" 
+                              :disabled="drugs.disabled"
+                              ref="drugs_result_date"
+                              /> <!-- bawal butangan og v-model ang datepicker ky ma undefiend -->
+                            <label for="floatingInput" class="text-gray-700">Select a date</label>
+                          </div>
+                        </div>
                         &nbsp;
-                        <input v-model="drugs.result_date" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder="result"
+                        <input v-model="drugs.result" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 
+                        leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder="Input result"
                         :disabled="drugs.disabled"/>
                     </div>
                   </li>
@@ -351,15 +419,24 @@
                     <div class="flex items-center pl-3">
                       <input @change="handleBlood" id="laravel-checkbox" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
                       <label for="Blood-checkbox" class="py-3 ml-2 w-full text-sm font-medium text-gray-900 dark:text-gray-300">Complete Blood Count</label>
-                      <input v-model="blood.result" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="date" placeholder="date"
-                      :disabled="blood.disabled"/>
+                      <div class="flex items-center justify-center">
+                        <div class="datepicker relative form-floating mb-3 xl:w-96">
+                          <input type="text"
+                            class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                            placeholder="Select a dateasdsad" data-mdb-toggle="datepicker" 
+                            :disabled="blood.disabled"
+                            ref="blood_result_date"
+                            /> <!-- bawal butangan og v-model ang datepicker ky ma undefiend -->
+                          <label for="floatingInput" class="text-gray-700">Select a date</label>
+                        </div>
+                      </div>
                       &nbsp;
-                      <input v-model="blood.result_date" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder="result" 
+                      <input v-model="blood.result" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder="Input result"
                       :disabled="blood.disabled"/>
                     </div>
                   </li>
               </ul>
-              <div class="flex flex-wrap mb-6 bg-green-200 pt-2">
+              <div class="flex flex-wrap mb-6 pt-2">
                 <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
                     Laboratory Status
                 </label>
