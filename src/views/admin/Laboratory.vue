@@ -277,11 +277,12 @@
   
     <!-- Modal -->
     <div class="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto" id="exampleModalXl" tabindex="-1" aria-labelledby="exampleModalXlLabel" aria-modal="true" role="dialog" ref="el_modal">
-      <div class="modal-dialog modal-lg relative w-auto pointer-events-none">
+      <div class="modal-dialog modal-xl relative w-auto pointer-events-none">
         <div class="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current">
           <div class="modal-header flex flex-shrink-0 items-center justify-between p-4 border-b border-gray-200 rounded-t-md">
             <h5 class="text-lg font-medium leading-normal text-gray-800" id="exampleModalXlLabel">
-              Extra large modal
+              <i class="fas fa-plus"></i>
+              Add Laboratory data
             </h5>
             <button type="button"
               class="btn-close box-content w-4 h-4 p-1 text-black border-none rounded-none opacity-50 focus:shadow-none focus:outline-none focus:opacity-100 hover:text-black hover:opacity-75 hover:no-underline"
@@ -310,7 +311,7 @@
                     <p class="text-red-500 text-xs italic">Please fill out this field.</p>
                   </div>
                 </div>
-                <div class="flex flex-wrap -mx-3 mb-6">
+                <div class="flex flex-wrap -mx-3 mb-2">
                   <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                     <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
                       BP Date
@@ -319,7 +320,7 @@
                     <p class="text-red-500 text-xs italic">Please fill out this field.</p>
                   </div>
                 </div>
-                <div class="flex flex-wrap -mx-3 mb-6">
+                <div class="flex flex-wrap -mx-3 mb-2">
                   <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                     <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
                       Random Blood Sugar
@@ -335,99 +336,287 @@
                     <p class="text-red-500 text-xs italic">Please fill out this field.</p>
                   </div>
                 </div>
-                <div class="flex flex-wrap mb-6 pt-2">
+                <div class="flex flex-wrap mb-3 pt-2">
                   <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
                       Laboratory Test
                   </label>
                 </div>
                 <ul class="w-100 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                  <!-- Routine Urinalysis -->
                   <li class="w-full rounded-t-lg border-b border-gray-200 dark:border-gray-600">
-                    <div class="flex items-center pl-3">
+                    <div class="flex items-center p-2">
                         <input @change="handleXray" id="vue-checkbox" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500  dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                        <label for="vue-checkbox" class="py-3 ml-2 w-full text-sm font-medium text-gray-900 dark:text-gray-300">X-RAY</label>
+                        <label for="vue-checkbox" class="py-3 ml-4 w-full text-sm font-medium text-gray-900 dark:text-gray-300"><b> Routine Urinalysis </b> </label>
                         <div class="flex items-center justify-center">
-                          <div class="datepicker relative form-floating mb-3 xl:w-96" >
+                          <div class="datepicker relative form-floating h-23 xl:w-96" >
                             <input type="text"
-                              class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid 
-                              border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                              placeholder="Select a dateasdsad" data-mdb-toggle="datepicker" 
+                              class=" w-full h-10 px-3 py-1.5 font-normal text-gray-700 bg-white bg-clip-padding border border-solid 
+                              border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-500 focus:bg-white focus:border-blue-600 focus:outline-none"
+                              placeholder="Select a date" data-mdb-toggle="datepicker" 
                               :disabled="xray.disabled"
                               ref="xray_result_date"
-                              /> <!-- bawal butangan og v-model ang datepicker ky ma undefiend -->
-                            <label for="floatingInput" class="text-gray-700">Select a date</label>
+                              />
+                               <!-- <label for="floatingInput" class="text-gray-700">Select a date</label> -->
+                               <!-- bawal butangan og v-model ang datepicker ky ma undefiend -->
                           </div>
                         </div>
                         &nbsp;
-                        <!-- <input v-model="xray.result" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 
-                        px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" 
-                        id="grid-last-name" 
-                        type="text" 
-                        placeholder="Input result"
-                        :disabled="xray.disabled"/> -->
                         <input
                           v-model="xray.result"
                           :disabled="xray.disabled"
                           type="text"
-                          class="
-                            form-control
-                            block
-                            w-full
-                            px-4
-                            py-2
-                            text-xl
-                            font-normal
-                            text-gray-700
-                            bg-white bg-clip-padding
-                            border border-solid border-gray-300
-                            rounded
-                            transition
-                            ease-in-out
-                            m-0
-                            focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none
-                          "
-                          id="exampleFormControlInput2"
-                          placeholder="Input Result"
+                          class="h-10 w-full px-4 py-2  font-normal text-gray-700 bg-white bg-clip-padding border border-solid 
+                          border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-500 focus:bg-white focus:border-blue-600 focus:outline-none " id="exampleFormControlInput2" placeholder="Input result"
                         />
+                        <!-- <input v-model="blood.result" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder="Input result"
+                      :disabled="blood.disabled"/> -->
                     </div>
                   </li>
+                   <!-- Fecalysis with Occult Blood -->
                   <li class="w-full rounded-t-lg border-b border-gray-200 dark:border-gray-600">
-                    <div class="flex items-center pl-3">
+                    <div class="flex items-center p-2">
                         <input @change="handleDrugs" id="react-checkbox" type="checkbox" 
                         class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 
                         dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                        <label for="react-checkbox" class="py-3 ml-2 w-full text-sm font-medium text-gray-900 dark:text-gray-300">Drugs</label>
+                        <label for="react-checkbox" class="py-3 ml-4 w-full text-sm font-medium text-gray-900 dark:text-gray-300"><b>Fecalysis with Occult Blood</b>
+                          <br>
+                          (Ova & Parasites, Ameba)
+                        </label>
                         <div class="flex items-center justify-center">
-                        <div class="datepicker relative form-floating mb-3 xl:w-96">
+                        <div class="datepicker relative form-floating xl:w-96">
                             <input type="text"
-                              class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border 
-                              border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 
-                              focus:outline-none"
+                            class="w-full h-10 px-3 py-1.5 font-normal text-gray-700 bg-white bg-clip-padding border border-solid 
+                              border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-500 focus:bg-white focus:border-blue-600 focus:outline-none"
                               placeholder="Select a date" data-mdb-toggle="datepicker" 
                               :disabled="drugs.disabled"
                               ref="drugs_result_date"
                               /> <!-- bawal butangan og v-model ang datepicker ky ma undefiend -->
-                            <label for="floatingInput" class="text-gray-700">Select a date</label>
+                            <!-- <label for="floatingInput" class="text-gray-700">Select a date</label> -->
                           </div>
                         </div>
                         &nbsp;
-                        <input v-model="drugs.result" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 
+                        <input v-model="drugs.result" class="h-10 w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 
                         leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder="Input result"
                         :disabled="drugs.disabled"/>
                     </div>
                   </li>
+                   <!-- CBC -->
                   <li class="w-full rounded-t-lg border-b border-gray-200 dark:border-gray-600">
-                    <div class="flex items-center pl-3">
+                    <div class="flex items-center p-2">
                       <input @change="handleBlood" id="laravel-checkbox" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                      <label for="Blood-checkbox" class="py-3 ml-2 w-full text-sm font-medium text-gray-900 dark:text-gray-300">Complete Blood Count</label>
+                      <label for="Blood-checkbox" class="py-3 ml-4 w-full text-sm font-medium text-gray-900 dark:text-gray-300"><b>Complete Blood Count</b></label>
                       <div class="flex items-center justify-center">
-                        <div class="datepicker relative form-floating mb-3 xl:w-96">
+                        <div class="datepicker relative form-floating  xl:w-96">
                           <input type="text"
-                            class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                            placeholder="Select a dateasdsad" data-mdb-toggle="datepicker" 
+                           class=" w-full h-10 px-3 py-1.5 font-normal text-gray-700 bg-white bg-clip-padding border border-solid 
+                              border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-500 focus:bg-white focus:border-blue-600 focus:outline-none"
+                            placeholder="Select a date" data-mdb-toggle="datepicker" 
                             :disabled="blood.disabled"
                             ref="blood_result_date"
                             /> <!-- bawal butangan og v-model ang datepicker ky ma undefiend -->
-                          <label for="floatingInput" class="text-gray-700">Select a date</label>
+                        </div>
+                      </div>
+                      &nbsp;
+                      <input v-model="blood.result" class="h-10 w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder="Input result"
+                      :disabled="blood.disabled"/>
+                    </div>
+                  </li>
+                   <!-- ABO & Rh Blood Typing -->
+                  <li class="w-full rounded-t-lg border-b border-gray-200 dark:border-gray-600">
+                    <div class="flex items-center p-2">
+                        <input @change="handleXray" id="vue-checkbox" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500  dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                        <label for="vue-checkbox" class="py-3 ml-4 w-full text-sm font-medium text-gray-900 dark:text-gray-300"><b>ABO & Rh Blood Typing</b></label>
+                        <div class="flex items-center justify-center">
+                          <div class="datepicker relative form-floating  xl:w-96" >
+                            <input type="text"
+                            class=" w-full h-10 px-3 py-1.5 font-normal text-gray-700 bg-white bg-clip-padding border border-solid 
+                              border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-500 focus:bg-white focus:border-blue-600 focus:outline-none"
+                              placeholder="Select a date" data-mdb-toggle="datepicker" 
+                              :disabled="xray.disabled"
+                              ref="xray_result_date"
+                              /> <!-- bawal butangan og v-model ang datepicker ky ma undefiend -->
+                          </div>
+                        </div>
+                        &nbsp;
+                        <input v-model="drugs.result" class="h-10 w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 
+                        leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder="Input result"
+                        :disabled="drugs.disabled"/>
+                        <!-- <input v-model="blood.result" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder="Input result"
+                      :disabled="blood.disabled"/> -->
+                    </div>
+                  </li>
+                  <!-- Fasting Blood Sugar    -->
+                  <li class="w-full rounded-t-lg border-b border-gray-200 dark:border-gray-600">
+                    <div class="flex items-center p-2">
+                        <input @change="handleDrugs" id="react-checkbox" type="checkbox" 
+                        class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 
+                        dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                        <label for="react-checkbox" class="py-3 ml-4 w-full text-sm font-medium text-gray-900 dark:text-gray-300"><b>Fasting Blood Sugar</b></label>
+                        <div class="flex items-center justify-center">
+                        <div class="datepicker relative form-floating xl:w-96">
+                            <input type="text"
+                            class=" w-full h-10 px-3 py-1.5 font-normal text-gray-700 bg-white bg-clip-padding border border-solid 
+                              border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-500 focus:bg-white focus:border-blue-600 focus:outline-none"
+                              placeholder="Select a date" data-mdb-toggle="datepicker" 
+                              :disabled="drugs.disabled"
+                              ref="drugs_result_date"
+                              /> <!-- bawal butangan og v-model ang datepicker ky ma undefiend -->
+
+                          </div>
+                        </div>
+                        &nbsp;
+                        <input v-model="drugs.result" class="h-10 w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 
+                        leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder="Input result"
+                        :disabled="drugs.disabled"/>
+                    </div>
+                  </li>
+                  <!--Lipid Porfile -->
+                  <li class="w-full rounded-t-lg border-b border-gray-200 dark:border-gray-600">
+                    <div class="flex items-center p-2">
+                      <input @change="handleBlood" id="laravel-checkbox" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                      <label for="Blood-checkbox" class="py-3 ml-4 w-full text-sm font-medium text-gray-900 dark:text-gray-300"> <b>Lipid Profile</b>
+                        <br>
+                        (Total Cholesterol, HDL, LDL, VLDL Triglycerides)</label>
+                      <div class="flex items-center justify-center">
+                        <div class="datepicker relative form-floating  xl:w-96">
+                          <input type="text"
+                          class=" w-full h-10 px-3 py-1.5 font-normal text-gray-700 bg-white bg-clip-padding border border-solid 
+                              border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-500 focus:bg-white focus:border-blue-600 focus:outline-none"
+                            placeholder="Select a date" data-mdb-toggle="datepicker" 
+                            :disabled="blood.disabled"
+                            ref="blood_result_date"
+                            /> <!-- bawal butangan og v-model ang datepicker ky ma undefiend -->
+                        </div>
+                      </div>
+                      &nbsp;
+                      <input v-model="blood.result" class="h-10 block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder="Input result"
+                      :disabled="blood.disabled"/>
+                    </div>
+                  </li>
+                 <!-- Serum Creatinine, Uric Acid, BUN, Potassium  -->
+                  <li class="w-full rounded-t-lg border-b border-gray-200 dark:border-gray-600">
+                    <div class="flex items-center p-2">
+                      <input @change="handleBlood" id="laravel-checkbox" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                      <label for="Blood-checkbox" class="py-3 ml-4 w-full text-sm font-medium text-gray-900 dark:text-gray-300"><b>Serum Creatinine, Uric Acid,
+                        BUN, Potassium </b></label>
+                      <div class="flex items-center justify-center">
+                        <div class="datepicker relative form-floating  xl:w-96">
+                          <input type="text"
+                          class=" w-full h-10 px-3 py-1.5 font-normal text-gray-700 bg-white bg-clip-padding border border-solid 
+                              border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-500 focus:bg-white focus:border-blue-600 focus:outline-none"
+                            placeholder="Select a date" data-mdb-toggle="datepicker" 
+                            :disabled="blood.disabled"
+                            ref="blood_result_date"
+                            /> <!-- bawal butangan og v-model ang datepicker ky ma undefiend -->
+                        </div>
+                      </div>
+                      &nbsp;
+                      <input v-model="blood.result" class="h-10 w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder="Input result"
+                      :disabled="blood.disabled"/>
+                    </div>
+                  </li>
+                  <!-- SGPT -->
+                  <li class="w-full rounded-t-lg border-b border-gray-200 dark:border-gray-600">
+                    <div class="flex items-center p-2">
+                      <input @change="handleBlood" id="laravel-checkbox" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                      <label for="Blood-checkbox" class="py-3 ml-4 w-full text-sm font-medium text-gray-900 dark:text-gray-300"><b>SGPT, Alkaline, Phosphatase,
+                        Serum Albumin
+                      </b></label>
+                      <div class="flex items-center justify-center">
+                        <div class="datepicker relative form-floating  xl:w-96">
+                          <input type="text"
+                          class=" w-full h-10 px-3 py-1.5 font-normal text-gray-700 bg-white bg-clip-padding border border-solid 
+                              border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-500 focus:bg-white focus:border-blue-600 focus:outline-none"
+                            placeholder="Select a date" data-mdb-toggle="datepicker" 
+                            :disabled="blood.disabled"
+                            ref="blood_result_date"
+                            /> <!-- bawal butangan og v-model ang datepicker ky ma undefiend -->
+                        </div>
+                      </div>
+                      &nbsp;
+                      <input v-model="blood.result" class="h-10 w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder="Input result"
+                      :disabled="blood.disabled"/>
+                    </div>
+                  </li>
+                   <!-- X-RAY -->
+                   <li class="w-full rounded-t-lg border-b border-gray-200 dark:border-gray-600">
+                    <div class="flex items-center p-2">
+                      <input @change="handleBlood" id="laravel-checkbox" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                      <label for="Blood-checkbox" class="py-3 ml-4 w-full text-sm font-medium text-gray-900 dark:text-gray-300"><b>X-RAY</b> (PA & Lateral)</label>
+                      <div class="flex items-center justify-center">
+                        <div class="datepicker relative form-floating  xl:w-96">
+                          <input type="text"
+                          class=" w-full h-10 px-3 py-1.5 font-normal text-gray-700 bg-white bg-clip-padding border border-solid 
+                              border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-500 focus:bg-white focus:border-blue-600 focus:outline-none"
+                            placeholder="Select a date" data-mdb-toggle="datepicker" 
+                            :disabled="blood.disabled"
+                            ref="blood_result_date"
+                            /> <!-- bawal butangan og v-model ang datepicker ky ma undefiend -->
+                        </div>
+                      </div>
+                      &nbsp;
+                      <input v-model="blood.result" class="h-10 w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder="Input result"
+                      :disabled="blood.disabled"/>
+                    </div>
+                  </li>
+                   <!-- ECG -->
+                   <li class="w-full rounded-t-lg border-b border-gray-200 dark:border-gray-600">
+                    <div class="flex items-center p-2">
+                      <input @change="handleBlood" id="laravel-checkbox" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                      <label for="Blood-checkbox" class="py-3 ml-4 w-full text-sm font-medium text-gray-900 dark:text-gray-300"><b>ElectroCardioGram</b> (ECG)</label>
+                      <div class="flex items-center justify-center">
+                        <div class="datepicker relative form-floating  xl:w-96">
+                          <input type="text"
+                          class=" w-full h-10 px-3 py-1.5 font-normal text-gray-700 bg-white bg-clip-padding border border-solid 
+                              border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-500 focus:bg-white focus:border-blue-600 focus:outline-none"
+                            placeholder="Select a date" data-mdb-toggle="datepicker" 
+                            :disabled="blood.disabled"
+                            ref="blood_result_date"
+                            /> <!-- bawal butangan og v-model ang datepicker ky ma undefiend -->
+                        </div>
+                      </div>
+                      &nbsp;
+                      <input v-model="blood.result" class="h-10 w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder="Input result"
+                      :disabled="blood.disabled"/>
+                    </div>
+                  </li>
+                   <!-- VAE -->
+                   <li class="w-full rounded-t-lg border-b border-gray-200 dark:border-gray-600">
+                    <div class="flex items-center p-2">
+                      <input @change="handleBlood" id="laravel-checkbox" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                      <label for="Blood-checkbox" class="py-3 ml-4 w-full text-sm font-medium text-gray-900 dark:text-gray-300"><b>Visual Acuity Examination</b></label>
+                      <div class="flex items-center justify-center">
+                        <div class="datepicker relative form-floating  xl:w-96">
+                          <input type="text"
+                          class=" w-full h-10 px-3 py-1.5 font-normal text-gray-700 bg-white bg-clip-padding border border-solid 
+                              border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-500 focus:bg-white focus:border-blue-600 focus:outline-none"
+                            placeholder="Select a date" data-mdb-toggle="datepicker" 
+                            :disabled="blood.disabled"
+                            ref="blood_result_date"
+                            /> <!-- bawal butangan og v-model ang datepicker ky ma undefiend -->
+                        </div>
+                      </div>
+                      &nbsp;
+                      <input v-model="blood.result" class="h-10  w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder="Input result"
+                      :disabled="blood.disabled"/>
+                    </div>
+                  </li>
+                   <!-- Abdominal Ultraasound -->
+                   <li class="w-full rounded-t-lg border-b border-gray-200 dark:border-gray-600">
+                    <div class="flex items-center p-2">
+                      <input @change="handleBlood" id="laravel-checkbox" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                      <label for="Blood-checkbox" class="py-3 ml-4 w-full text-sm font-medium text-gray-900 dark:text-gray-300"> <b>Abdominal Ultrasound</b>
+                      <br> (Liver, Spleen, Pancreas, Adrenals, <br> Gallbladder, Kidneys and Urinary Bladder)
+                      </label>
+                      <div class="flex items-center justify-center">
+                        <div class="datepicker relative form-floating  xl:w-96">
+                          <input type="text"
+                          class=" w-full h-10 px-3 py-1.5 font-normal text-gray-700 bg-white bg-clip-padding border border-solid 
+                              border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-500 focus:bg-white focus:border-blue-600 focus:outline-none"
+                            placeholder="Select a date" data-mdb-toggle="datepicker" 
+                            :disabled="blood.disabled"
+                            ref="blood_result_date"
+                            /> <!-- bawal butangan og v-model ang datepicker ky ma undefiend -->
                         </div>
                       </div>
                       &nbsp;
@@ -436,7 +625,7 @@
                     </div>
                   </li>
               </ul>
-              <div class="flex flex-wrap mb-6 pt-2">
+              <div class="flex flex-wrap mt-5 pt-2">
                 <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
                     Laboratory Status
                 </label>
